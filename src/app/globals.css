@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Sahitya:wght@400;700&display=swap');
+
+
 :root {
   --color-primaire: #1B2C42;
   --color-text:#FFFFFF;
   --color-borders:#DDDD55;
   --color-header_footer:#254567;
+
+  --font-libre-baskerville: 'Libre Baskerville', serif;
+  --font-sahitya: 'Sahitya', serif;
 }
 
 * {
