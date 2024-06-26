@@ -1,16 +1,23 @@
+'use client'
+
 import Header from '@/components/header/Header';
+import Score from '@/components/scoreLightHouse/score';
 import './globals.css'
 import style from '../pages/styles/home.module.css'
 import Link from 'next/link';
 
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+
 export default function Home() {
+
+
   return (
-  <>
+    <>
       <Header/>
       <section className={style.section}>
-           
-              <div className={style.block_titre}>
-                <h1 className={style.titre}>Lorem Ipsum Dolor Sit Amet</h1>
+              <div>
+                <h1 className={style.titre} >Lorem Ipsum Dolor Sit Amet</h1>
                 <span className={style.line}></span>
               </div>
 
@@ -28,7 +35,8 @@ export default function Home() {
                 <Link href='/more_info' className={style.btn}>En savoirs plus</Link>
                 <Link href='/generate_report' className={style.btn}>Faites le test</Link>
               </div>
+              <Score />
       </section>
-  </>
+    </>
   );
 }
