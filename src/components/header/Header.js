@@ -14,7 +14,7 @@ export default function Header() {
         <>
             <header className={style.header}>
                 <div>
-                    <Image src={logo} alt="Logo de LightHouse" width={150} />
+                    <Image src={logo} alt="Logo de LightHouse" width={150} priority={true} />
                 </div>
 
                 <nav className={`${style.navigation} ${open ? style.open : ''}`}>
