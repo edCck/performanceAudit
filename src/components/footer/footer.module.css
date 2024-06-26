@@ -1,0 +1,30 @@
+.footer{
+    width: 100%;
+    background-color: var(--color-header_footer);
+    height: 85px;
+    margin-top: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.footer .copyright{
+    margin-bottom: 15px;
+    margin-right: 50px;
+    color: var( --color-text);
+    font-family: var(--font-sahitya);
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    font-size: 20px;
+}
+
+@media screen and (max-width:800px) {
+    .footer{
+        justify-content: center;
+    }
+}
+
+
+
+

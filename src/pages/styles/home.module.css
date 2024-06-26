@@ -10,7 +10,7 @@
 .section .titre{
     color: var( --color-text);
     font-family: var(--font-libre-baskerville);
-    font-size: 40px;
+    font-size: 38px;
 }
 
 .section .line{
@@ -24,7 +24,12 @@
 .section .paragraphe{
     color: var( --color-text);
     font-family: var(--font-sahitya);
-    font-size: 25px;
+    font-size: 24px;
+}
+
+.section .paragraphe .key{
+    color: var(--color-borders);
+    font-weight: 800;
 }
 
 .section .block_btn{
@@ -33,12 +38,12 @@
 }
 
 .section .block_btn .btn{
-    width: 200px;
+    width: 180px;
     text-align: center;
     border: 2px solid white;
     border-radius: 10px;
     padding: 15px 0px;
-    font-size: 20px;
+    font-size: 18px;
     color: var(--color-text);
     font-family: var(--font-libre-baskerville);
     transition: background-color 0.5s;

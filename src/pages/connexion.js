@@ -1,4 +1,4 @@
-import Header from "../components/header/Header"
+// import Header from "../components/header/Header"
 import '../app/globals.css'
 
 
@@ -6,7 +6,7 @@ import '../app/globals.css'
 export default function Connexion() {
     return (
       <div>
-        <Header />
+        {/* <Header /> */}
   <h1>Page Connexion</h1>
       </div>
          
