@@ -1,28 +1,23 @@
-.footer{
+.footer {
     width: 100%;
     background-color: var(--color-header_footer);
-    height: 85px;
-    margin-top: 50px;
+    height: 70px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .footer .copyright{
-    margin-bottom: 15px;
-    margin-right: 50px;
     color: var( --color-text);
     font-family: var(--font-sahitya);
     display: flex;
     align-items: center;
     column-gap: 5px;
     font-size: 20px;
-}
-
-@media screen and (max-width:800px) {
-    .footer{
-        justify-content: center;
-    }
 }
 
 

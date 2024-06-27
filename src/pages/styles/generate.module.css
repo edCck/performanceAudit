@@ -1,0 +1,133 @@
+.section{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 40px;
+    row-gap: 15px;
+    margin-bottom: 95px;
+}
+
+.section .titre{
+    color: var( --color-text);
+    font-family: var(--font-libre-baskerville);
+    font-size: 38px;
+}
+
+.section .line{
+    display: block;
+    height: 5px;
+    width: 250px;
+    background-color: var(--color-borders)
+}
+
+.section .paragraphe{
+    color: var( --color-text);
+    font-family: var(--font-sahitya);
+    font-size: 24px;
+}
+
+.section .form{
+    border: 2px solid white;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    width: 500px;
+    padding: 15px;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.section .form .titre_form{
+    color: var( --color-text);
+    font-family: var(--font-libre-baskerville);
+    font-size: 25px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.section .form .block_input{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.section .form .block_input .input{
+    background: none;
+    border: none;
+    border-bottom: 2px solid var(--color-borders);
+    color: var( --color-text);
+    font-family: var(--font-sahitya);
+    font-size: 20px;
+    padding: 10px 0;
+    width: 300px;
+}
+
+.section .form .block_btn{
+    display: flex;
+    justify-content: center;
+    margin: 15px 0px;
+}
+
+.section .form .btn{
+    width: 180px;
+    text-align: center;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 15px 15px;
+    font-size: 15px;
+    color: var(--color-text);
+    font-family: var(--font-libre-baskerville);
+    background-color: transparent;
+}
+
+@media screen and (max-width:1350px ) {
+    .section .titre{
+        font-size: 35px;
+    }
+
+    .section .paragraphe{
+        font-size: 23px;
+    }
+}
+
+
+@media screen and (max-width:1000px) {
+    .section .titre{
+        font-size: 30px;
+    }
+
+    .section .paragraphe{
+        font-size: 21px;
+    }
+}
+
+@media screen and (max-width:800px) {
+    .section{
+        width: 90%;
+        margin-top: 0px;
+        padding-top: 145px;
+    }
+
+    .section .titre{
+        font-size: 23px;
+    }
+
+    .section .paragraphe{
+        font-size: 19px;
+    }
+
+    .section .form{
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    .section .form .titre_form{
+        color: var( --color-text);
+        font-family: var(--font-libre-baskerville);
+        font-size: 23px;
+        text-align: center;
+        margin-top: 15px;
+    }
+}

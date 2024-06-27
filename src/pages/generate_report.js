@@ -1,8 +1,11 @@
 'use client'
 
 import Header from "../components/header/Header"
+import Footer from "@/components/footer/footer";
 import '../app/globals.css'
 import { useState } from 'react';
+
+import style from './styles/generate.module.css'
 
 
 
@@ -12,7 +15,8 @@ export default function GenerateReport() {
   const [url, setUrl] = useState("");
 
 
-  const handleSendReport = async () => {
+  const handleSendReport = async (e) => {
+    e.preventDefault(); 
     try {
         const response = await fetch("/api/generateReport", {
             method: "POST",
@@ -37,36 +41,50 @@ export default function GenerateReport() {
     return (
       <>
       <Header/>
-       <section>
-          {/* <div>
-            <h1>Générer votre rapport de performance ! </h1>
-            <span></span>
+       <section className={style.section}>
+          <div>
+            <h1 className={style.titre}>Générer votre rapport de performance ! </h1>
+            <span className={style.line}></span>
           </div>
 
           <div>
-            <p>
-
+            <p className={style.paragraphe}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis aliquam nisi et ultrices.
+             Praesent id leo vestibulum, maximus lorem ut, vestibulum sapien. Proin est quam, rutrum quis
+              facilisis ut, blandit vitae quam. Vivamus id felis in felis maximus egestas. Nam varius orci 
+              orci, et viverra lacus convallis a. Curabitur in justo porta, cursus justo nec, rutrum nunc.
+               Aliquam mattis felis vel tortor imperdiet pharetra.
+             Etiam metus ex, mollis ac maximus nec, vehicula quis neque.     
             </p>
-          </div> */}
-          <form>
-                <p>Recevoir le rapport</p>
+          </div>
+          <form className={style.form}>
+                <p className={style.titre_form}>Recevoir le rapport</p>
 
-                <input
+                <div className={style.block_input}>
+                <input className={style.input}
                 type="email"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
-            <input
+                </div>
+              
+              <div className={style.block_input}>
+              <input className={style.input}
                 type="url"
                 placeholder="URL"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
             />
-
-                <button onClick={handleSendReport}>Envoyer</button>
+              </div>
+           
+                <div className={style.block_btn}>
+                <button onClick={handleSendReport} className={style.btn}>Tester votre site</button>
+                </div>
+              
           </form>
       </section>
+      <Footer/>
       </>
     
          

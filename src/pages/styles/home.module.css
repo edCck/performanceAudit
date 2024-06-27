@@ -1,19 +1,20 @@
-.section{
+.section {
     width: 80%;
     display: flex;
     flex-direction: column;
     row-gap: 15px;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 40px;
+    margin-bottom: 95px;
 }
 
-.section .titre{
-    color: var( --color-text);
+.section .titre {
+    color: var(--color-text);
     font-family: var(--font-libre-baskerville);
     font-size: 38px;
 }
 
-.section .line{
+.section .line {
     display: block;
     height: 5px;
     width: 200px;
@@ -21,23 +22,23 @@
 }
 
 
-.section .paragraphe{
-    color: var( --color-text);
+.section .paragraphe {
+    color: var(--color-text);
     font-family: var(--font-sahitya);
     font-size: 24px;
 }
 
-.section .paragraphe .key{
+.section .paragraphe .key {
     color: var(--color-borders);
     font-weight: 800;
 }
 
-.section .block_btn{
+.section .block_btn {
     display: flex;
     column-gap: 15px;
 }
 
-.section .block_btn .btn{
+.section .block_btn .btn {
     width: 180px;
     text-align: center;
     border: 2px solid white;
@@ -49,56 +50,57 @@
     transition: background-color 0.5s;
 }
 
-.section .block_btn .btn:hover{
+.section .block_btn .btn:hover {
     background-color: white;
     color: var(--color-primaire);
 }
 
 
 @media screen and (max-width:1350px) {
-    .section .titre{
+    .section .titre {
         font-size: 35px;
     }
 
-    .section .paragraphe{
+    .section .paragraphe {
         font-size: 23px;
     }
 
-    .section .block_btn .btn{
+    .section .block_btn .btn {
         font-size: 18px;
     }
 }
 
 @media screen and (max-width:1000px) {
-    .section .titre{
+    .section .titre {
         font-size: 30px;
     }
 
-    .section .paragraphe{
+    .section .paragraphe {
         font-size: 21px;
     }
 
-    .section .block_btn .btn{
+    .section .block_btn .btn {
         font-size: 18px;
         padding: 10px 0px;
     }
 }
 
-@media screen and (max-width:650px) {
-    .section{
+@media screen and (max-width:800px) {
+    .section {
         width: 90%;
-        margin-top: 30px;
+        margin-top: 0px;
+        padding-top: 145px;
     }
 
-    .section .titre{
+    .section .titre {
         font-size: 23px;
     }
 
-    .section .paragraphe{
+    .section .paragraphe {
         font-size: 19px;
     }
 
-    .section .block_btn .btn{
+    .section .block_btn .btn {
         font-size: 17px;
         padding: 10px 0px;
         width: 170px;
@@ -106,22 +108,17 @@
 }
 
 @media screen and (max-width:500px) {
-    .section .titre{
+    .section .titre {
         font-size: 21px;
     }
 
-    .section .paragraphe{
+    .section .paragraphe {
         font-size: 18px;
     }
 
-    .section .block_btn .btn{
+    .section .block_btn .btn {
         font-size: 16px;
         padding: 10px 0px;
         width: 170px;
     }
 }
-
-
-
-
-
