@@ -16,35 +16,11 @@ export default function GenerateReport() {
   const [errorMessage, setErrorMessage] = useState(null);
 
 
-  const checkUrlExists = async (url) => {
-    try {
-      // Envoi d'une requête HEAD à l'URL pour vérifier si elle est accessible
-      const response = await fetch(url, { method: 'HEAD' });
-      // Retourne true si la requête réussit sinon false
-      return response.ok;
-    } catch (error) {
-      // En cas d'erreur
-      console.error("Erreur lors de la vérification de l'URL:", error);
-      // Retourne false pour indiquer que l'URL n'est pas accessible
-      return false;
-    }
-  };
-
-
   // Fonction pour gérer l'envoi du rapport
   const handleSendReport = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage(null);
-
-    // Vérifier si l'url existe
-    const urlExists = await checkUrlExists(url);
-    // console.log(urlExists);
-    if (!urlExists) {
-      setErrorMessage("L'URL fournie n'est pas valide ou accessible.");
-      setIsLoading(false);
-      return;
-    }
 
     try {
       // Envoi de la requête HTTP au serveur pour générer le rapport
@@ -57,19 +33,17 @@ export default function GenerateReport() {
       });
 
       const data = await response.json();
-      // console.log(data);
-      // console.log(data.url);
       if (response.ok) {
         setSuccessMessage("Les rapports ont été générés avec succès et l'email a été envoyé !");
         setDesktopReportLink(data.desktopReportPath);
         setMobileReportLink(data.mobileReportPath);
         setUrl(data.domainName);
       } else {
-        alert("Erreur lors de la génération des rapports.");
+        setErrorMessage(data.error || "Erreur lors de la génération des rapports.");
       }
     } catch (error) {
       console.error("Erreur:", error);
-      alert("Erreur lors de la génération des rapports.");
+      setErrorMessage("Une erreur s'est produite. Veuillez réessayer plus tard.");
     } finally {
       setIsLoading(false);
     }

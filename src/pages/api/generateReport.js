@@ -4,6 +4,7 @@ import nodemailer from "nodemailer";  // Module pour envoyer des emails
 import path from 'path';  // Module pour gérer et manipuler les chemins de fichiers
 import puppeteer from 'puppeteer';  // Module pour contrôler Chrome/Chromium via des scripts
 import fs from 'fs';  // Module pour interagir avec le système de fichiers
+import fetch from 'node-fetch';
 
 // Fonction pour extraire le nom de domaine de l'URL
 function getDomainName(url) {
@@ -14,9 +15,22 @@ function getDomainName(url) {
       const domain = match[1].split('.').slice(0, -1).join('.');
       return domain;
     }
-  
     return null;
 }
+
+  const checkUrlExists = async (url) => {
+    try {
+      // Envoi d'une requête HEAD à l'URL pour vérifier si elle est accessible
+      const response = await fetch(url, { method: 'HEAD' });
+      // Retourne true si la requête réussit sinon false
+      return response.ok;
+    } catch (error) {
+      // En cas d'erreur
+      console.error("Erreur lors de la vérification de l'URL:", error);
+      // Retourne false pour indiquer que l'URL n'est pas accessible
+      return false;
+    }
+  };
 
 // Fonction pour récupéré l'heure actuelle
 function getFormattedTime() {
@@ -30,6 +44,11 @@ export default async function handler(req, res) {
     if (req.method === "POST") {
         const { email, url } = req.body;  // Extraction des paramètres email et url du corps de la requête
         console.log("Données reçues:", { email, url });  // Journalisation des données reçues
+
+        const urlExists = await checkUrlExists(url);
+        if (!urlExists) {
+            return res.status(400).json({ error: "L'URL fournie n'est pas valide ou accessible." });
+        }
 
         try {  
             // Récupération du nom de domaine 
