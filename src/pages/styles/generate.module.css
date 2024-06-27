@@ -82,6 +82,33 @@
     background-color: transparent;
 }
 
+.loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .loader p {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    font-family: var(--font-libre-baskerville);
+  }
+
+  .success_message{
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+  }
+
+  .block_reports{
+    border: 2px solid white;
+    padding: 15px;
+  }
+
 @media screen and (max-width:1350px ) {
     .section .titre{
         font-size: 35px;

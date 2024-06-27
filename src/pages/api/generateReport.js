@@ -3,7 +3,7 @@ import { launch } from 'chrome-launcher';  // Module pour lancer une instance de
 import nodemailer from "nodemailer";  // Module pour envoyer des emails
 import path from 'path';  // Module pour gérer et manipuler les chemins de fichiers
 import puppeteer from 'puppeteer';  // Module pour contrôler Chrome/Chromium via des scripts
-
+import fs from 'fs';  // Module pour interagir avec le système de fichiers
 
 // Fonction pour extraire le nom de domaine de l'URL
 function getDomainName(url) {
@@ -16,10 +16,10 @@ function getDomainName(url) {
     }
   
     return null;
-  }
+}
 
-  // Fonction pour récupéré l'heure actuelle
-  function getFormattedTime() {
+// Fonction pour récupéré l'heure actuelle
+function getFormattedTime() {
     const now = new Date();
     return `${String(now.getHours()).padStart(2, '0')}-${String(now.getMinutes()).padStart(2, '0')}-${String(now.getSeconds()).padStart(2, '0')}`;
 }
@@ -38,7 +38,12 @@ export default async function handler(req, res) {
             const time = getFormattedTime();
             console.log(time);
 
-            
+            // Créer un répertoire pour les rapports si n'existe pas
+            const reportsDir = path.join(process.cwd(), 'public', 'reports');
+            if (!fs.existsSync(reportsDir)){
+                fs.mkdirSync(reportsDir, { recursive: true });
+            }
+
             // Lancement d'une instance de Chrome en mode headless
             const chrome = await launch({ chromeFlags: ["--headless"] });
 
@@ -60,16 +65,16 @@ export default async function handler(req, res) {
 
                 // Création d'une nouvelle page
                 const page = await browser.newPage();
-               // Injection du contenu HTML du rapport dans la page
+                // Injection du contenu HTML du rapport dans la page
                 await page.setContent(reportHtml, { waitUntil: 'networkidle0' });
-                 // Destination du fichier PDF une fois enregistré
-                 const reportPdfPath = path.join(process.cwd(), 'public', 'reports', `report-${reportType}-${domainName}-${time}.pdf`);
-                   // Enregistrement du PDF
+                // Destination du fichier PDF une fois enregistré
+                const reportPdfPath = path.join(reportsDir, `report-${reportType}-${domainName}-${time}.pdf`);
+                // Enregistrement du PDF
                 await page.pdf({ path: reportPdfPath, format: 'A4', timeout: 120000 });
                 await browser.close();
                 console.log(`Rapport PDF ${reportType} généré avec succès à : ${reportPdfPath}`);
 
-                return reportPdfPath;
+                return `/reports/report-${reportType}-${domainName}-${time}.pdf`; // Chemin relatif
             };
 
             // Options de configuration pour Lighthouse en mode desktop
@@ -126,17 +131,17 @@ export default async function handler(req, res) {
                 to: email,
                 subject: "Rapport Lighthouse",
                 html: `<h1>Bonjour</h1>
-                            <br>
-                                <p>Veuillez trouver les rapports Lighthouse en pièces jointes.</p>
-                                    <p>Bien cordialement Delecroix Alexis</p>`,
+                       <br>
+                       <p>Veuillez trouver les rapports Lighthouse en pièces jointes.</p>
+                       <p>Bien cordialement Delecroix Alexis</p>`,
                 attachments: [
                     {
                         filename: path.basename(desktopReportPath),
-                        path: desktopReportPath
+                        path: path.join(process.cwd(), 'public', desktopReportPath)
                     },
                     {
                         filename: path.basename(mobileReportPath),
-                        path: mobileReportPath
+                        path: path.join(process.cwd(), 'public', mobileReportPath)
                     }
                 ]
             };
@@ -148,7 +153,11 @@ export default async function handler(req, res) {
                     res.status(500).json({ error: "Erreur lors de l'envoi de l'email" });
                 } else {
                     console.log("Email envoyé:", info.response);
-                    res.status(200).json({ message: "Email envoyé avec succès", desktopReportPath, mobileReportPath });
+                    res.status(200).json({ 
+                        message: "Email envoyé avec succès", 
+                        desktopReportPath, 
+                        mobileReportPath 
+                    });
                 }
             });
         } catch (error) {
