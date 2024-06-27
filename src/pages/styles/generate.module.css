@@ -106,8 +106,42 @@
 
   .block_reports{
     border: 2px solid white;
-    padding: 15px;
+    border-left: none;
+    border-right: none;
+    padding: 15px 0px;
+    /* border-radius: 10px; */
+    display: flex;
+    justify-content: space-between;
   }
+
+  .block_reports .url{
+    color: white;
+    font-family: var(--font-libre-baskerville);
+    font-size: 30px;
+    align-content: center;
+  }
+
+  .block_reports .block_btn{
+    display: flex;
+    column-gap: 20px;
+  }
+
+  .block_reports .block_btn .btn{
+    width: 180px;
+    text-align: center;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 15px 15px;
+    font-size: 15px;
+    color: var(--color-text);
+    font-family: var(--font-libre-baskerville);
+    background-color: transparent;
+  }
+
+ 
+  
+
+
 
 @media screen and (max-width:1350px ) {
     .section .titre{
