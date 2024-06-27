@@ -13,11 +13,41 @@ export default function GenerateReport() {
   const [successMessage, setSuccessMessage] = useState(null);
   const [desktopReportLink, setDesktopReportLink] = useState(null);
   const [mobileReportLink, setMobileReportLink] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
+
+  const checkUrlExists = async (url) => {
+    try {
+      // Envoi d'une requête HEAD à l'URL pour vérifier si elle est accessible
+      const response = await fetch(url, { method: 'HEAD' });
+      // Retourne true si la requête réussit sinon false
+      return response.ok;
+    } catch (error) {
+      // En cas d'erreur
+      console.error("Erreur lors de la vérification de l'URL:", error);
+      // Retourne false pour indiquer que l'URL n'est pas accessible
+      return false;
+    }
+  };
+
+
+  // Fonction pour gérer l'envoi du rapport
   const handleSendReport = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage(null);
+
+    // Vérifier si l'url existe
+    const urlExists = await checkUrlExists(url);
+    // console.log(urlExists);
+    if (!urlExists) {
+      setErrorMessage("L'URL fournie n'est pas valide ou accessible.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
+      // Envoi de la requête HTTP au serveur pour générer le rapport
       const response = await fetch("/api/generateReport", {
         method: "POST",
         headers: {
@@ -77,10 +107,10 @@ export default function GenerateReport() {
               </div>
             </div>
             <div>
-                <button onClick={refreshPage}>
-                  Essayer une autre analyse !
-                </button>
-              </div>
+              <button className={style.btn} onClick={refreshPage}>
+                Essayer une autre analyse !
+              </button>
+            </div>
           </div>
         ) : (
           <>
@@ -99,6 +129,7 @@ export default function GenerateReport() {
             </div>
             <form className={style.form}>
               <p className={style.titre_form}>Recevoir le rapport</p>
+              {errorMessage && <p className={style.error_message}>{errorMessage}</p>}
               <div className={style.block_input}>
                 <input
                   className={style.input}
