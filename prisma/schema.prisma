@@ -6,6 +6,7 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+    shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 // Modèle User
@@ -27,3 +28,4 @@ model Report {
   
   user             User     @relation(fields: [userId], references: [id]) // Relation avec le modèle User.
 }
+

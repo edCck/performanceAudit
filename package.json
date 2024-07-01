@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "nodemon --watch pages --watch components --watch lib -e js --exec next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -18,6 +18,7 @@
     "next": "14.2.4",
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.14",
+    "nodemon": "^3.1.4",
     "prisma": "^5.16.1",
     "puppeteer": "^22.12.1",
     "react": "^18",

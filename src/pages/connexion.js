@@ -8,7 +8,9 @@ export default function Connexion() {
       <>
       <Header/>
        <section>
-
+              <h1>
+                Je suis la page connexion
+              </h1>
       </section>
       </>
     
