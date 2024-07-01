@@ -164,6 +164,7 @@ export default async function handler(req, res) {
             res.status(500).json({ error: "Erreur lors de la génération du rapport ou de l'envoi de l'email" });
         }
     } else {
+         // Si la méthode HTTP n'est pas POST, répondre avec un statut 405 (Méthode non autorisée)
         res.status(405).json({ error: "Méthode non autorisée" });
     }
 }
