@@ -1,6 +1,68 @@
-.section{
+.section {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 70vh;
+}
+
+.section .form {
+    border: 2px solid white;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    width: 500px;
+    padding: 15px;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.section .form .titre{
+    text-align: center;
+    color: var( --color-text);
+    font-family: var(--font-libre-baskerville);
+    font-size: 25px;
+}
+
+.section .form .input{
+    background: none;
+    border: none;
+    border-bottom: 2px solid var(--color-borders);
+    color: var( --color-text);
+    font-family: var(--font-sahitya);
+    font-size: 20px;
+    padding: 10px 0;
+    width: 300px;
+    margin: auto;
+}
+
+.section .form .btn{
+    width: 150px;
+    text-align: center;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 10px 5px;
+    font-size: 15px;
+    color: var(--color-text);
+    font-family: var(--font-libre-baskerville);
+    background-color: transparent;
+    margin: auto;
+    transition: background 0.5s;
+    cursor: pointer;
+}
+.section .form .btn:hover{
+background-color: white;
+color: var(--color-primaire); 
+}
+
+.section .form .btn2{
+    border: none;
+    background-color: transparent;
+    font-family: var(--font-sahitya);
+    color: var(--color-text);
+    font-style: italic;
+    font-weight:600;
+    font-size: 18px;
+    cursor: pointer;
 }

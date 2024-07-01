@@ -88,6 +88,12 @@
     color: var(--color-text);
     font-family: var(--font-libre-baskerville);
     background-color: transparent;
+    transition: all 0.5s;
+}
+
+.section .form .btn:hover{
+    background-color: white;
+    color: var(--color-primaire);
 }
 
 .loader {
