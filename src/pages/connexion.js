@@ -82,6 +82,38 @@ export default function Connexion() {
         }
     };
 
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Utilisateur connecté avec succès:', data);
+                setSuccessMessage('Connexion réussie !');
+                localStorage.setItem('token', data.token);
+                // Réinitialiser les champs du formulaire
+                setEmail('');
+                setPassword('');
+                setErrorMessage('');
+
+            } else {
+                const errorData = await response.json();
+                setErrorMessage(errorData.message || 'Erreur lors de la connexion.');
+            }
+        } catch (error) {
+            console.error('Erreur lors de la connexion:', error);
+            setErrorMessage('Une erreur s\'est produite. Veuillez réessayer plus tard.');
+        }
+    };
+
     // Fonction pour vérifier la force du mot de passe
     const isStrongPassword = (password_admin) => {
         const lengthCheck = password_admin.length >= 8;
@@ -137,10 +169,20 @@ export default function Connexion() {
                         </button>
                     </form>
                 ) : (
-                    <form className={style.form}>
+                    <form className={style.form} onSubmit={handleLogin}>
+                         {errorMessage && <p className={style.error}>{errorMessage}</p>}
                         <h1 className={style.titre}>Connexion</h1>
-                        <input className={style.input} type="email" placeholder="Email" />
-                        <input className={style.input} type="password" placeholder="Mot de passe" />
+                        <input className={style.input}
+                         type="email"
+                          placeholder="Email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          />
+                        <input className={style.input}
+                         type="password" placeholder="Mot de passe"
+                         value={password}
+                         onChange={(e) => setPassword(e.target.value)}
+                         />
                         <button className={style.btn} type="submit">Se connecter</button>
                         <button className={style.btn2} onClick={handleShowRegistrationForm}>
                             {`Vous n'êtes pas encore inscrit`}

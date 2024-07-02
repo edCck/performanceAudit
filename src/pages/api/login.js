@@ -26,7 +26,7 @@ export default async function login(req,res) {
             res.status(200).json({ token });
         } else {
             // Réponse avec un statut 401 (Non autorisé) si l'email ou le mot de passe est incorrect
-            res.status(401).json({ message: 'Invalid email or password' });
+            res.status(401).json({ message: 'Email ou password invalide' });
         }
     } else {
         // Si la méthode HTTP n'est pas POST, répondre avec un statut 405 (Méthode non autorisée)
