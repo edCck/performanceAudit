@@ -11,8 +11,8 @@ export default function GenerateReport() {
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
-  const [desktopReportLink, setDesktopReportLink] = useState(null);
-  const [mobileReportLink, setMobileReportLink] = useState(null);
+  const [desktopReportUrl, setDesktopReportUrl] = useState(null);
+  const [mobileReportUrl, setMobileReportUrl] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
 
@@ -38,8 +38,8 @@ export default function GenerateReport() {
       const data = await response.json();
       if (response.ok) {
         setSuccessMessage("Les rapports ont été générés avec succès et l'email a été envoyé !");
-        setDesktopReportLink(data.desktopReportPath);
-        setMobileReportLink(data.mobileReportPath);
+        setDesktopReportUrl(data.desktopReportUrl);
+        setMobileReportUrl(data.mobileReportUrl);
         setUrl(data.domainName);
       } else {
         setErrorMessage(data.error || "Erreur lors de la génération des rapports.");
@@ -79,8 +79,8 @@ export default function GenerateReport() {
             <div className={style.block_reports}>
               <p className={style.url}>{url}</p>
               <div className={style.block_btn}>
-                <a href={desktopReportLink} download className={style.btn}>Version ordinateur</a>
-                <a href={mobileReportLink} download className={style.btn}>Version Mobile</a>
+                <a href={desktopReportUrl} download target="_blank" className={style.btn}>Version ordinateur</a>
+                <a href={mobileReportUrl} download target="_blank" className={style.btn}>Version Mobile</a>
               </div>
             </div>
             <div>

@@ -51,6 +51,7 @@ function getUserIdFromToken(token) {
     }
 }
 
+
 export default async function handler(req, res) {
     if (req.method === "POST") {
         const { email, url } = req.body;
@@ -71,19 +72,16 @@ export default async function handler(req, res) {
         }
 
         try {
-            // Extraction du nom de domaine à partir de l'URL fournie
+
             const domainName = getDomainName(url);
             console.log(domainName);
-            // Récupération de l'heure formatée actuelle pour le nom du rapport
             const time = getFormattedTime();
             console.log(time);
 
-            // Définir le répertoire de sauvegarde des rapports en fonction de l'ID utilisateur
             const reportsDir = userId
                 ? path.join(process.cwd(), 'public', 'reports', `user_${userId}`)
                 : path.join(process.cwd(), 'public', 'reports');
 
-            // Création du répertoire de sauvegarde s'il n'existe pas
             if (!fs.existsSync(reportsDir)) {
                 fs.mkdirSync(reportsDir, { recursive: true });
             }
@@ -145,6 +143,17 @@ export default async function handler(req, res) {
             const desktopReportPath = await generateReport(url, desktopOptions, 'desktop');
             const mobileReportPath = await generateReport(url, mobileOptions, 'mobile');
 
+            console.log(desktopReportPath);
+            console.log(mobileReportPath);
+
+            let desktopReportUrl = `/reports/${path.basename(desktopReportPath)}`;
+            let mobileReportUrl = `/reports/${path.basename(mobileReportPath)}`;
+
+            if (userId) {
+                desktopReportUrl = `/reports/user_${userId}/${path.basename(desktopReportPath)}`;
+                mobileReportUrl = `/reports/user_${userId}/${path.basename(mobileReportPath)}`;
+            }
+
             await chrome.kill();
 
             if (userId) {
@@ -153,8 +162,8 @@ export default async function handler(req, res) {
                     data: {
                         userId: userId,
                         siteName: domainName,
-                        pdfUrlMobile: mobileReportPath,
-                        pdfUrlDesktop: desktopReportPath,
+                        pdfUrlMobile: mobileReportUrl,
+                        pdfUrlDesktop: desktopReportUrl,
                     }
                 });
                 console.log('Rapport enregistré dans la base de données.');
@@ -208,8 +217,8 @@ export default async function handler(req, res) {
                     console.log("Email envoyé:", info.response);
                     res.status(200).json({
                         message: "Email envoyé avec succès",
-                        desktopReportPath,
-                        mobileReportPath,
+                        desktopReportUrl,
+                        mobileReportUrl,
                         domainName
                     });
                 }
