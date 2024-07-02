@@ -27,7 +27,6 @@ export default function Header() {
                 <div>
                     <Image src={logo} alt="Logo de LightHouse" width={150} priority={true} />
                 </div>
-
                 <nav className={`${style.navigation} ${open ? style.open : ''}`}>
                     <ul className={style.list}>
                         <Link href="/"><li className={style.nav_item}>Accueil</li></Link>
@@ -41,7 +40,6 @@ export default function Header() {
                         )}
                     </ul>
                 </nav>
-
                 <div className={`${style.burger} ${open ? style.actif : ''}`} onClick={() => setOpen(!open)}>
                     <span className={style.burger_bar1}></span>
                     <span className={style.burger_bar2}></span>
