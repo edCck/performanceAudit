@@ -3,6 +3,7 @@ import Header from "../components/header/Header";
 import Footer from "@/components/footer/footer";
 import '../app/globals.css';
 import style from "./styles/connexion.module.css";
+import { useRouter } from 'next/router';
 
 export default function Connexion() {
     const [showRegistrationForm, setShowRegistrationForm] = useState(false); 
@@ -23,6 +24,7 @@ export default function Connexion() {
     // Fonction pour gérer l'inscription
     const handleRegister = async (e) => {
         e.preventDefault();
+        
 
         // Vérification de la force du mot de passe
         const passwordValidation = isStrongPassword(password);
@@ -84,7 +86,7 @@ export default function Connexion() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
+  
         try {
             const response = await fetch('/api/login', {
                 method: 'POST',
@@ -103,6 +105,8 @@ export default function Connexion() {
                 setEmail('');
                 setPassword('');
                 setErrorMessage('');
+        
+                window.location.href = '/history';
 
             } else {
                 const errorData = await response.json();

@@ -4,11 +4,22 @@ import style from './header.module.css';
 import Image from 'next/image';
 import logo from '../../../public/images/logo.png';
 import Link from 'next/link';
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
 
 export default function Header() {
     const [open, setOpen] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        // Vérifier si l'utilisateur est connecté au chargement du composant
+        const token = localStorage.getItem('token');
+        setIsAuthenticated(!!token);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+    };
 
     return (
         <>
@@ -20,7 +31,14 @@ export default function Header() {
                 <nav className={`${style.navigation} ${open ? style.open : ''}`}>
                     <ul className={style.list}>
                         <Link href="/"><li className={style.nav_item}>Accueil</li></Link>
-                        <Link href="/connexion"><li className={style.nav_item}>Connexion</li></Link>
+                        {!isAuthenticated ? (
+                            <Link href="/connexion"><li className={style.nav_item}>Connexion</li></Link>
+                        ) : (
+                            <>
+                                <Link href="/history"><li className={style.nav_item}>Historique</li></Link>
+                                <li className={style.nav_item} onClick={handleLogout}>Se déconnecter</li>
+                            </>
+                        )}
                     </ul>
                 </nav>
 

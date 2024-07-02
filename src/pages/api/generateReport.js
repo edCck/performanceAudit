@@ -1,4 +1,3 @@
-// Import des modules nécessaires
 import lighthouse from "lighthouse";
 import { launch } from 'chrome-launcher';
 import nodemailer from "nodemailer";
@@ -6,6 +5,11 @@ import path from 'path';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
 import fetch from 'node-fetch';
+import { PrismaClient } from '@prisma/client';
+import jwt from 'jsonwebtoken';
+
+const prisma = new PrismaClient();
+
 
 // Fonction pour extraire le nom de domaine de l'URL
 function getDomainName(url) {
@@ -37,24 +41,50 @@ function getFormattedTime() {
 }
 
 // Fonction asynchrone principale, point d'entrée de l'API
+function getUserIdFromToken(token) {
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        return decoded.id;
+    } catch (error) {
+        console.error('Erreur lors de la vérification du token:', error);
+        return null;
+    }
+}
+
 export default async function handler(req, res) {
     if (req.method === "POST") {
         const { email, url } = req.body;
         console.log("Données reçues:", { email, url });
 
+        // Vérification de L'url
         const urlExists = await checkUrlExists(url);
         if (!urlExists) {
             return res.status(400).json({ error: "L'URL fournie n'est pas valide ou accessible." });
         }
 
+        // Récupération de l'ID de l'utilisateur à partir du token d'autorisation
+        let userId = null;
+        if (req.headers.authorization) {
+            const token = req.headers.authorization.split(' ')[1];
+            userId = getUserIdFromToken(token);
+            console.log("User ID from token:", userId);
+        }
+
         try {
+            // Extraction du nom de domaine à partir de l'URL fournie
             const domainName = getDomainName(url);
             console.log(domainName);
+            // Récupération de l'heure formatée actuelle pour le nom du rapport
             const time = getFormattedTime();
             console.log(time);
 
-            const reportsDir = path.join(process.cwd(), 'public', 'reports');
-            if (!fs.existsSync(reportsDir)){
+            // Définir le répertoire de sauvegarde des rapports en fonction de l'ID utilisateur
+            const reportsDir = userId
+                ? path.join(process.cwd(), 'public', 'reports', `user_${userId}`)
+                : path.join(process.cwd(), 'public', 'reports');
+
+            // Création du répertoire de sauvegarde s'il n'existe pas
+            if (!fs.existsSync(reportsDir)) {
                 fs.mkdirSync(reportsDir, { recursive: true });
             }
 
@@ -79,7 +109,7 @@ export default async function handler(req, res) {
                 await browser.close();
                 console.log(`Rapport PDF ${reportType} généré avec succès à : ${reportPdfPath}`);
 
-                return `/reports/report-${reportType}-${domainName}-${time}.pdf`;
+                return reportPdfPath;
             };
 
             const desktopOptions = {
@@ -117,6 +147,19 @@ export default async function handler(req, res) {
 
             await chrome.kill();
 
+            if (userId) {
+                // Enregistrement du rapport dans la base de données
+                await prisma.report.create({
+                    data: {
+                        userId: userId,
+                        siteName: domainName,
+                        pdfUrlMobile: mobileReportPath,
+                        pdfUrlDesktop: desktopReportPath,
+                    }
+                });
+                console.log('Rapport enregistré dans la base de données.');
+            }
+
             const transporter = nodemailer.createTransport({
                 service: "hotmail",
                 auth: {
@@ -124,6 +167,27 @@ export default async function handler(req, res) {
                     pass: process.env.EMAIL_PASS,
                 },
             });
+
+            // Vérification de l'existence des fichiers avant de les attacher à l'email
+            const attachments = [];
+
+            if (fs.existsSync(desktopReportPath)) {
+                attachments.push({
+                    filename: path.basename(desktopReportPath),
+                    path: desktopReportPath
+                });
+            } else {
+                console.error(`Fichier non trouvé: ${desktopReportPath}`);
+            }
+
+            if (fs.existsSync(mobileReportPath)) {
+                attachments.push({
+                    filename: path.basename(mobileReportPath),
+                    path: mobileReportPath
+                });
+            } else {
+                console.error(`Fichier non trouvé: ${mobileReportPath}`);
+            }
 
             const mailOptions = {
                 from: process.env.EMAIL_USER,
@@ -133,16 +197,7 @@ export default async function handler(req, res) {
                        <br>
                        <p>Veuillez trouver les rapports Lighthouse en pièces jointes.</p>
                        <p>Bien cordialement Delecroix Alexis</p>`,
-                attachments: [
-                    {
-                        filename: path.basename(desktopReportPath),
-                        path: path.join(process.cwd(), 'public', desktopReportPath)
-                    },
-                    {
-                        filename: path.basename(mobileReportPath),
-                        path: path.join(process.cwd(), 'public', mobileReportPath)
-                    }
-                ]
+                attachments: attachments
             };
 
             transporter.sendMail(mailOptions, (error, info) => {
@@ -151,9 +206,9 @@ export default async function handler(req, res) {
                     res.status(500).json({ error: "Erreur lors de l'envoi de l'email" });
                 } else {
                     console.log("Email envoyé:", info.response);
-                    res.status(200).json({ 
-                        message: "Email envoyé avec succès", 
-                        desktopReportPath, 
+                    res.status(200).json({
+                        message: "Email envoyé avec succès",
+                        desktopReportPath,
                         mobileReportPath,
                         domainName
                     });
@@ -164,7 +219,6 @@ export default async function handler(req, res) {
             res.status(500).json({ error: "Erreur lors de la génération du rapport ou de l'envoi de l'email" });
         }
     } else {
-         // Si la méthode HTTP n'est pas POST, répondre avec un statut 405 (Méthode non autorisée)
         res.status(405).json({ error: "Méthode non autorisée" });
     }
 }

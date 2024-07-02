@@ -23,11 +23,14 @@ export default function GenerateReport() {
     setErrorMessage(null);
 
     try {
+      // Récupération du token dans le local storage
+      const token = localStorage.getItem('token');
       // Envoi de la requête HTTP au serveur pour générer le rapport
       const response = await fetch("/api/generateReport", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ email, url }),
       });
