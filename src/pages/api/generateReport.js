@@ -40,7 +40,7 @@ function getFormattedTime() {
     return `${String(now.getHours()).padStart(2, '0')}-${String(now.getMinutes()).padStart(2, '0')}-${String(now.getSeconds()).padStart(2, '0')}`;
 }
 
-// Fonction asynchrone principale, point d'entrée de l'API
+
 function getUserIdFromToken(token) {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);

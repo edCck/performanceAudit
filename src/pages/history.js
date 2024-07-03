@@ -46,19 +46,27 @@ export default function History() {
     return (
         <>
             <Header />
-            <section className={style.historySection}>
-                <h1>Historique des Rapports</h1>
-                <ul className={style.reportList}>
+            <section className={style.section}>
+                <div>
+                <h1 className={style.titre}>Historique de vos rapports LightHouse</h1>
+                <span className={style.line}></span>
+                </div>
+              
+
+                <div className={style.container_report}>
                     {userReports.map((report, index) => (
-                        <li key={index} className={style.reportItem}>
-                            <h3>{report.siteName}</h3>
+                        <div key={index} className={style.block_report}>
+                            <div className={style.report}>
+                            <p>{report.siteName}</p>
                             <p>Date: {new Date(report.createdAt).toLocaleDateString()}</p>
                             {/* Exemple de lien pour télécharger le rapport PDF */}
                             <a href={report.pdfUrlDesktop} target="_blank" rel="noopener noreferrer">Télécharger PDF (Desktop)</a>
                             <a href={report.pdfUrlMobile} target="_blank" rel="noopener noreferrer">Télécharger PDF (Mobile)</a>
-                        </li>
+                            </div>
+                        </div>
                     ))}
-                </ul>
+                </div>
+            
             </section>
             <Footer />
         </>

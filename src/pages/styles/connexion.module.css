@@ -66,3 +66,34 @@ color: var(--color-primaire);
     font-size: 18px;
     cursor: pointer;
 }
+
+.section .form .error {
+    color: red;
+    font-family: var(--font-sahitya);
+    text-align: center;
+}
+
+.section .form .success{
+    color: green;
+    font-weight: bold;
+    text-align: center;
+    font-family: var(--font-sahitya);
+
+}
+
+@media screen and (max-width:800px) {
+    .section {
+        height: 95vh;
+    }
+
+    .section .form {
+        width: 380px;
+        padding: 15px;
+    }
+
+    .section .form .titre{
+        font-size: 22px;
+    }
+
+
+}

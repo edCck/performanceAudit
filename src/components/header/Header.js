@@ -18,7 +18,8 @@ export default function Header() {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        setIsAuthenticated(false);
+        setIsAuthenticated(false)
+        window.location.href = '/';
     };
 
     return (

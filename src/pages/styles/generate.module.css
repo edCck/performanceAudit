@@ -1,4 +1,4 @@
-.section{
+.section {
     width: 80%;
     display: flex;
     flex-direction: column;
@@ -8,26 +8,26 @@
     margin-bottom: 95px;
 }
 
-.section .titre{
-    color: var( --color-text);
+.section .titre {
+    color: var(--color-text);
     font-family: var(--font-libre-baskerville);
     font-size: 38px;
 }
 
-.section .line{
+.section .line {
     display: block;
     height: 5px;
     width: 250px;
     background-color: var(--color-borders)
 }
 
-.section .paragraphe{
-    color: var( --color-text);
+.section .paragraphe {
+    color: var(--color-text);
     font-family: var(--font-sahitya);
     font-size: 24px;
 }
 
-.section .form{
+.section .form {
     border: 2px solid white;
     display: flex;
     flex-direction: column;
@@ -39,21 +39,21 @@
     margin-top: 50px;
 }
 
-.section .form .titre_form{
-    color: var( --color-text);
+.section .form .titre_form {
+    color: var(--color-text);
     font-family: var(--font-libre-baskerville);
     font-size: 25px;
     text-align: center;
     margin-top: 15px;
 }
 
-.section .form .block_input{
-  width: 100%;
-  display: flex;
-  justify-content: center;
+.section .form .block_input {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.section .form .error_message{
+.section .form .error_message {
     color: red;
     font-family: var(--font-sahitya);
     text-align: center;
@@ -61,24 +61,24 @@
 
 }
 
-.section .form .block_input .input{
+.section .form .block_input .input {
     background: none;
     border: none;
     border-bottom: 2px solid var(--color-borders);
-    color: var( --color-text);
+    color: var(--color-text);
     font-family: var(--font-sahitya);
     font-size: 20px;
     padding: 10px 0;
     width: 300px;
 }
 
-.section .form .block_btn{
+.section .form .block_btn {
     display: flex;
     justify-content: center;
     margin: 15px 0px;
 }
 
-.section .form .btn{
+.section .form .btn {
     width: 180px;
     text-align: center;
     border: 2px solid white;
@@ -91,7 +91,7 @@
     transition: all 0.5s;
 }
 
-.section .form .btn:hover{
+.section .form .btn:hover {
     background-color: white;
     color: var(--color-primaire);
 }
@@ -101,62 +101,63 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
-  
-  .loader p {
+}
+
+.loader p {
     margin-top: 10px;
     font-size: 20px;
     font-weight: bold;
     text-align: center;
     color: white;
     font-family: var(--font-libre-baskerville);
-  }
+}
 
-  .success_message{
+.success_message {
     display: flex;
     flex-direction: column;
     row-gap: 15px;
-  }
+}
 
-  .block_reports{
+.block_reports {
     border: 2px solid white;
     padding: 15px 30px;
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
-  }
+}
 
-  .block_reports .url{
+.block_reports .url {
     color: white;
     font-family: var(--font-libre-baskerville);
     font-size: 30px;
     align-content: center;
-  }
+}
 
-  .block_reports .block_btn{
+.block_reports .block_btn {
     display: flex;
     column-gap: 20px;
-  }
+    justify-content: center;
+}
 
-  .block_reports .block_btn .btn{
+.block_reports .block_btn .btn {
     width: 180px;
     text-align: center;
     border: 2px solid white;
-    border-radius: 10px;
+    border-radius: 6px;
     padding: 15px 15px;
     font-size: 15px;
     color: var(--color-text);
     font-family: var(--font-libre-baskerville);
     background-color: transparent;
     transition: all 0.5s;
-  }
+}
 
-  .block_reports .block_btn .btn:hover {
+.block_reports .block_btn .btn:hover {
     background-color: white;
     color: var(--color-primaire);
 }
 
-  .btn{
+.btn {
     width: 250px;
     text-align: center;
     border: 2px solid white;
@@ -167,69 +168,105 @@
     font-family: var(--font-libre-baskerville);
     background-color: transparent;
     transition: all 0.5s;
-  }
+}
 
-  .btn:hover {
+.btn:hover {
     background-color: white;
     color: var(--color-primaire);
 }
 
-@media screen and (max-width:1350px ) {
-    .section .titre{
+@media screen and (max-width:1350px) {
+    .section .titre {
         font-size: 35px;
     }
 
-    .section .paragraphe{
+    .section .paragraphe {
         font-size: 23px;
     }
 }
 
 
 @media screen and (max-width:1000px) {
-    .section .titre{
+    .section .titre {
         font-size: 30px;
     }
 
-    .section .paragraphe{
+    .section .paragraphe {
         font-size: 21px;
     }
 }
 
 @media screen and (max-width:800px) {
-    .section{
+    .section {
         width: 90%;
         margin-top: 0px;
         padding-top: 145px;
     }
 
-    .section .titre{
+    .section .titre {
         font-size: 23px;
     }
 
-    .section .paragraphe{
+    .section .paragraphe {
         font-size: 19px;
     }
 
-    .section .form{
+    .section .form {
         width: 100%;
         margin-top: 30px;
     }
 
-    .section .form .titre_form{
-        color: var( --color-text);
+    .section .form .titre_form {
+        color: var(--color-text);
         font-family: var(--font-libre-baskerville);
         font-size: 23px;
         text-align: center;
         margin-top: 15px;
     }
 
-    .block_reports{
-        flex-direction: column;
-        justify-content: center;
+    .block_reports {
+        padding: 10px;
     }
 
-    .block_reports .url{
-        /* text-align: center; */
-        margin-bottom: 15px;
+    .block_reports .block_btn .btn {
+        width: 180px;
+        border-radius: 6px;
+        padding: 10px 10px;
+        font-size: 15px;
+    }
+
+    .block_reports .url {
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width:700px) {
+
+    .block_reports {
+        padding: 0px;
+        border: 0px;
+        flex-direction: column;
+        row-gap: 15px;
+    }
+
+    .block_reports .block_btn {
+        justify-content: flex-start;
+    }
+
+    .block_reports .block_btn .btn {
+        width: 160px;
+        border-radius: 6px;
+        padding: 10px 10px;
+        font-size: 14px;
+    }
+
+    .block_reports .url {
+        font-size: 25px;
+    }
+
+    .btn {
+        width: 220px;
+        padding: 10px;
+        font-size: 14px;
     }
 }

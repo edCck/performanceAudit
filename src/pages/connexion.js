@@ -3,7 +3,6 @@ import Header from "../components/header/Header";
 import Footer from "@/components/footer/footer";
 import '../app/globals.css';
 import style from "./styles/connexion.module.css";
-import { useRouter } from 'next/router';
 
 export default function Connexion() {
     const [showRegistrationForm, setShowRegistrationForm] = useState(false); 
@@ -174,8 +173,9 @@ export default function Connexion() {
                     </form>
                 ) : (
                     <form className={style.form} onSubmit={handleLogin}>
-                         {errorMessage && <p className={style.error}>{errorMessage}</p>}
+                     
                         <h1 className={style.titre}>Connexion</h1>
+                        {errorMessage && <p className={style.error}>{errorMessage}</p>}
                         <input className={style.input}
                          type="email"
                           placeholder="Email"

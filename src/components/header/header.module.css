@@ -91,7 +91,6 @@
   transform: rotate(-45deg);
 }
 
-
 @media screen and (max-width: 800px) {
 
   .header {
@@ -108,15 +107,15 @@
     top: 70px;
     left: 0;
     background-color: var(--color-primaire);
-    transition: height 0.5s ease-out, opacity 0.5s ease-out;
+    transition: opacity 0.3s ease-out;
     overflow: hidden;
-    height: 0;
+    opacity: 0;
     margin-top: 42px;
     background-color: var(--color-header_footer);
   }
 
   .navigation.open {
-    height: 160px;
+   opacity: 1;
   }
 
   .navigation .list {

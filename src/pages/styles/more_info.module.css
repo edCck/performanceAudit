@@ -12,7 +12,6 @@
     color: var( --color-text);
     font-family: var(--font-libre-baskerville);
     font-size: 38px;
-    margin-bottom: 10px;
 }
 
 .section .line{
@@ -23,6 +22,7 @@
 }
 
 .section .paragraphe{
+    margin-top: 15px;
     color: var( --color-text);
     font-family: var(--font-sahitya);
     font-size: 24px;

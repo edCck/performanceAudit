@@ -1,0 +1,128 @@
+.section {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 95px;
+    row-gap: 40px;
+}
+
+.section .titre {
+    color: var(--color-text);
+    font-family: var(--font-libre-baskerville);
+    font-size: 38px;
+}
+
+.section .line {
+    display: block;
+    height: 5px;
+    width: 250px;
+    background-color: var(--color-borders)
+}
+
+.section .container_report {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+.section .block_report {
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 10px;
+
+}
+
+.section .block_report .report {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section .block_report p {
+    color: var(--color-text);
+    font-family: var(--font-sahitya);
+    font-size: 24px;
+}
+
+.section .block_report a {
+    border: 2px solid white;
+    border-radius: 6px;
+    color: var(--color-text);
+    font-family: var(--font-sahitya);
+    font-size: 20px;
+    padding: 5px 10px;
+    transition: background-color 0.5s;
+    width: 245px;
+    text-align: center;
+}
+
+.section .block_report a:hover {
+    background-color: white;
+    color: var(--color-primaire);
+}
+
+
+@media screen and (max-width:1250px) {
+
+    .section {
+        width: 90%;
+
+    }
+}
+
+@media screen and (max-width:1030px) {
+
+    .section .titre {
+        font-size: 30px;
+    }
+
+
+    .section .block_report p {
+        font-size: 20px;
+    }
+
+    .section .block_report a {
+        font-size: 18px;
+        padding: 5px 8px;
+    }
+
+}
+
+@media screen and (max-width:800px) {
+
+    .section {
+        margin-top: 0px;
+        padding-top: 145px;
+    }
+
+    .section .titre {
+        font-size: 23px;
+    }
+
+    .section .container_report {
+        flex-direction: row;
+        flex-wrap: wrap;
+        column-gap: 15px;
+        justify-content: center;
+    }
+
+    .section .block_report {
+        border: 2px solid white;
+        border-radius: 10px;
+        width: 300px;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+
+    }
+
+    .section .block_report .report {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        row-gap: 10px;
+
+    }
+}
