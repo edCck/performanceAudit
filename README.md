@@ -1,6 +1,6 @@
 # Application web rapports Lighthouse
 
-![Capture d'écran](./imgReadme/img1.png)
+ <img src="public/images/img1.png" alt="Photo de l'application LightHouse">
 
 ## Description
 Cette application web génère des rapports Lighthouse (mobile et ordinateur) pour les URL fournies par les utilisateurs, et envoie les rapports par email. Les utilisateurs inscrits peuvent également télécharger les rapports PDF directement depuis leurs espace personnel.
