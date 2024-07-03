@@ -17,7 +17,7 @@ Cette application web génère des rapports Lighthouse (mobile et ordinateur) po
 
 ## Installation
 ```bash
-git clone [https://github.com/votre-utilisateur/votre-projet.git](https://github.com/edCck/performanceAudit.git)
+git clone https://github.com/edCck/performanceAudit.git
 npm install
 ```
 
