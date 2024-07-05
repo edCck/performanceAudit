@@ -1,8 +1,7 @@
+'use client'
+
 import React, { useState } from 'react';
-import Header from "../components/header/Header";
-import Footer from "@/components/footer/footer";
-import '../app/globals.css';
-import style from "./styles/connexion.module.css";
+import style from "./connexion.module.css"
 
 export default function Connexion() {
     const [showRegistrationForm, setShowRegistrationForm] = useState(false); 
@@ -68,7 +67,6 @@ export default function Connexion() {
                 const data = await response.json();
                 console.log('Utilisateur inscrit avec succès:', data);
                 setSuccessMessage('Inscription réussie !');
-                // Réinitialisation des champs du formulaire après une inscription réussie
                 setEmail('');
                 setErrorMessage('');
                 setPassword('');
@@ -100,7 +98,6 @@ export default function Connexion() {
                 console.log('Utilisateur connecté avec succès:', data);
                 setSuccessMessage('Connexion réussie !');
                 localStorage.setItem('token', data.token);
-                // Réinitialiser les champs du formulaire
                 setEmail('');
                 setPassword('');
                 setErrorMessage('');
@@ -137,7 +134,6 @@ export default function Connexion() {
 
     return (
         <>
-            <Header />
             <section className={style.section}>
                 <div>
                 {showRegistrationForm ? ( 
@@ -195,7 +191,6 @@ export default function Connexion() {
                 )}
                        </div>
             </section>
-            <Footer />
         </>
     );
 }

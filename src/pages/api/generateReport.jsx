@@ -40,7 +40,7 @@ function getFormattedTime() {
     return `${String(now.getHours()).padStart(2, '0')}-${String(now.getMinutes()).padStart(2, '0')}-${String(now.getSeconds()).padStart(2, '0')}`;
 }
 
-
+// Fonction pour récupérer l'id de l'utilisateur
 function getUserIdFromToken(token) {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -72,25 +72,34 @@ export default async function handler(req, res) {
         }
 
         try {
-
             const domainName = getDomainName(url);
             console.log(domainName);
             const time = getFormattedTime();
             console.log(time);
 
+            // Définir le chemin du répertoire des rapports
             const reportsDir = userId
+                // Si userId est défini, inclure un sous-répertoire spécifique à l'utilisateur
                 ? path.join(process.cwd(), 'public', 'reports', `user_${userId}`)
+                // Sinon, utiliser le répertoire général des rapports
                 : path.join(process.cwd(), 'public', 'reports');
 
+            // Vérifier si le répertoire des rapports n'existe pas
             if (!fs.existsSync(reportsDir)) {
+                // Créer le répertoire des rapports, y compris tous les sous-répertoires nécessaires
                 fs.mkdirSync(reportsDir, { recursive: true });
             }
 
+
+            // Lancer une instance chrome
             const chrome = await launch({ chromeFlags: ["--headless"] });
 
+            // Fonction pour générer un rapport Lighthouse
             const generateReport = async (url, options, reportType) => {
+                // Exécuter Lighthouse pour l'URL donnée avec les options spécifiées
                 const runnerResult = await lighthouse(url, options);
 
+                // Récupérer le rapport HTML de Lighthouse
                 const reportHtml = runnerResult.report;
                 console.log(`Rapport ${reportType} généré avec succès.`);
 
@@ -100,10 +109,15 @@ export default async function handler(req, res) {
                     timeout: 0
                 });
 
+                // Ouvrir une nouvelle page avec Puppeteer
                 const page = await browser.newPage();
+                // Définir le contenu de la page avec le rapport HTML de Lighthouse
                 await page.setContent(reportHtml, { waitUntil: 'networkidle0' });
+                // Définir le chemin pour sauvegarder le rapport PDF
                 const reportPdfPath = path.join(reportsDir, `report-${reportType}-${domainName}-${time}.pdf`);
+                // Générer le PDF du rapport et le sauvegarder
                 await page.pdf({ path: reportPdfPath, format: 'A4', timeout: 120000 });
+                // Fermer le navigateur Puppeteer
                 await browser.close();
                 console.log(`Rapport PDF ${reportType} généré avec succès à : ${reportPdfPath}`);
 
@@ -113,7 +127,7 @@ export default async function handler(req, res) {
             const desktopOptions = {
                 logLevel: "info",
                 output: "html",
-                onlyCategories: ["performance"],
+                onlyCategories: ["performance", "accessibility", "best-practices", "seo"],
                 port: chrome.port,
                 formFactor: 'desktop',
                 screenEmulation: {
@@ -128,7 +142,7 @@ export default async function handler(req, res) {
             const mobileOptions = {
                 logLevel: "info",
                 output: "html",
-                onlyCategories: ["performance"],
+                onlyCategories: ["performance", "accessibility", "best-practices", "seo"],
                 port: chrome.port,
                 formFactor: 'mobile',
                 screenEmulation: {
@@ -140,15 +154,18 @@ export default async function handler(req, res) {
                 }
             };
 
+            // Générer les rapports pour le bureau et le mobile
             const desktopReportPath = await generateReport(url, desktopOptions, 'desktop');
             const mobileReportPath = await generateReport(url, mobileOptions, 'mobile');
 
             console.log(desktopReportPath);
             console.log(mobileReportPath);
 
+            // Définir les URL pour accéder aux rapports
             let desktopReportUrl = `/reports/${path.basename(desktopReportPath)}`;
             let mobileReportUrl = `/reports/${path.basename(mobileReportPath)}`;
 
+            // Ajuster les URL si l'utilisateur est identifié
             if (userId) {
                 desktopReportUrl = `/reports/user_${userId}/${path.basename(desktopReportPath)}`;
                 mobileReportUrl = `/reports/user_${userId}/${path.basename(mobileReportPath)}`;

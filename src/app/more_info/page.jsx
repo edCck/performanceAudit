@@ -1,12 +1,9 @@
-import '../app/globals.css'
-import Header from '@/components/header/Header'
-import Footer from '@/components/footer/footer'
-import style from './styles/more_info.module.css'
+
+import style from './more_info.module.css'
 
 export default function more_info() {
     return (
         <>
-            <Header />
             <section className={style.section}>
                 <div>
                     <div>
@@ -65,7 +62,6 @@ export default function more_info() {
 
                 </div>
             </section>
-            <Footer />
         </>
     )
 }

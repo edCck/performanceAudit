@@ -1,11 +1,8 @@
 'use client'
 
-import Header from '@/components/header/Header';
-import Score from '@/components/scoreLightHouse/score';
-import Footer from '@/components/footer/footer';
 
-import './globals.css'
-import style from '../pages/styles/home.module.css'
+import Score from '@/components/scoreLightHouse/score';
+import style from './styles/home.module.css'
 import Link from 'next/link';
 
 
@@ -13,7 +10,6 @@ export default function Home() {
 
   return (
     <>
-      <Header />
       <section className={style.section}>
         <div>
           <h1 className={style.titre}>Optimisez votre Site Web</h1>
@@ -41,7 +37,6 @@ export default function Home() {
         </div>
         <Score />
       </section>
-      <Footer />
     </>
   );
 }

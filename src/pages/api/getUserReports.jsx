@@ -22,7 +22,6 @@ export default async function getUserReports(req, res) {
                     createdAt: 'desc'
                 }
             });
-
             res.status(200).json({ reports: userReports });
         } catch (error) {
             console.error('Erreur lors de la récupération des rapports de l\'utilisateur:', error);

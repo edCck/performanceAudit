@@ -1,10 +1,9 @@
-import '../../src/app/globals.css'
-import Header from "../components/header/Header";
-import Footer from "@/components/footer/footer";
+'use client'
+
 import { useState } from 'react';
 import Image from "next/image";
-import Animation from '../../public/images/loading.gif';
-import style from './styles/generate.module.css';
+import Animation from '../../../public/images/loading.gif'
+import style from './generate.module.css';
 
 export default function GenerateReport() {
   const [email, setEmail] = useState("");
@@ -58,7 +57,6 @@ export default function GenerateReport() {
 
   return (
     <>
-      <Header />
       <section className={style.section}>
         {isLoading ? (
           <div className={style.loader}>
@@ -132,7 +130,6 @@ export default function GenerateReport() {
           </>
         )}
       </section>
-      <Footer />
     </>
   );
 }

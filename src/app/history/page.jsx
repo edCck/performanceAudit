@@ -1,9 +1,8 @@
+'use client'
+
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Header from '@/components/header/Header';
-import Footer from '@/components/footer/footer';
-import '../app/globals.css';
-import style from './styles/history.module.css'
+import { useRouter } from 'next/navigation'
+import style from './history.module.css'
 
 export default function History() {
     const [userReports, setUserReports] = useState([]);
@@ -45,7 +44,6 @@ export default function History() {
 
     return (
         <>
-            <Header />
             <section className={style.section}>
                 <div>
                 <h1 className={style.titre}>Historique de vos rapports LightHouse</h1>
@@ -59,7 +57,6 @@ export default function History() {
                             <div className={style.report}>
                             <p>{report.siteName}</p>
                             <p>Date: {new Date(report.createdAt).toLocaleDateString()}</p>
-                            {/* Exemple de lien pour télécharger le rapport PDF */}
                             <a href={report.pdfUrlDesktop} target="_blank" rel="noopener noreferrer">Télécharger PDF (Desktop)</a>
                             <a href={report.pdfUrlMobile} target="_blank" rel="noopener noreferrer">Télécharger PDF (Mobile)</a>
                             </div>
@@ -68,7 +65,6 @@ export default function History() {
                 </div>
             
             </section>
-            <Footer />
         </>
     );
 }
