@@ -138,9 +138,6 @@ export default async function handler(req, res) {
                     height: 940,
                     deviceScaleFactor: 1,
                     disabled: false,
-                },
-                locales: {
-                    ar: path.join(process.cwd(), 'node_modules', 'lighthouse', 'shared', 'localization', 'locales', 'ar.json')
                 }
             };
 
@@ -156,9 +153,6 @@ export default async function handler(req, res) {
                     height: 667,
                     deviceScaleFactor: 2,
                     disabled: false,
-                },
-                locales: {
-                    ar: path.join(process.cwd(), 'node_modules', 'lighthouse', 'shared', 'localization', 'locales', 'ar.json')
                 }
             };
 
