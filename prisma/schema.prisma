@@ -6,7 +6,6 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
-    shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 // Modèle User
@@ -17,7 +16,6 @@ model User {
   reports   Report[]                              // Relation une-à-plusieurs avec le modèle Report.
 }
 
-// Modèle Report.
 model Report {
   id               Int      @id @default(autoincrement()) // Champ ID auto-incrémenté et clé primaire.
   userId           Int                                  // Champ pour stocker l'ID de l'utilisateur qui a généré le rapport.
@@ -25,7 +23,13 @@ model Report {
   pdfUrlMobile     String?                              // Champ pour stocker l'URL du PDF généré pour le rapport mobile.
   pdfUrlDesktop    String?                              // Champ pour stocker l'URL du PDF généré pour le rapport desktop.
   createdAt        DateTime @default(now())             // Champ pour stocker la date et l'heure de création du rapport, par défaut la date actuelle.
+  performanceScore Int?                                 // Score de performance
+  seoScore         Int?                                 // Score SEO
+  bestPracticesScore Int?                               // Score des meilleures pratiques
+  accessibilityScore Int?                               // Score d'accessibilité
+
   
   user             User     @relation(fields: [userId], references: [id]) // Relation avec le modèle User.
 }
+
 
