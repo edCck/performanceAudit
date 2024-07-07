@@ -247,6 +247,7 @@ export default async function handler(req, res) {
             res.status(500).json({ error: "Erreur lors de la génération du rapport ou de l'envoi de l'email" });
         }
     } else {
-        res.status(405).json({ error: "Méthode non autorisée" });
+        res.setHeader("Allow", ["POST"]);
+        res.status(405).json({ error: `Méthode ${req.method} non autorisée.` });
     }
 }
