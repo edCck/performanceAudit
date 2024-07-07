@@ -25,7 +25,7 @@ export default function GenerateReport() {
       // Récupération du token dans le local storage
       const token = localStorage.getItem('token');
       // Envoi de la requête HTTP au serveur pour générer le rapport
-      const response = await fetch("/api/generateReport", {
+      const response = await fetch("https://light-house-alpha.vercel.app/api/generateReport", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
