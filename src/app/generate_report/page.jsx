@@ -28,7 +28,6 @@ export default function GenerateReport() {
 
       const apiUrl = process.env.NEXT_PUBLIC_API_URL2;
 
-
       const response = await fetch(`${apiUrl}/api/generateReport`, {
         method: "POST",
         headers: {
