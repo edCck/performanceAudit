@@ -54,7 +54,7 @@ function getUserIdFromToken(token) {
 
 export default async function handler(req, res) {
 
-    // if (req.method === "POST") {
+    if (req.method === "POST") {
         const { email, url } = req.body;
         console.log("Données reçues:", { email, url });
 
@@ -245,7 +245,7 @@ export default async function handler(req, res) {
             console.error("Erreur lors de la génération du rapport ou de l'envoi de l'email:", error);
             res.status(500).json({ error: "Erreur lors de la génération du rapport ou de l'envoi de l'email" });
         }
-    // } else {
-    //     res.status(405).json({ error: `Méthode ${req.method} non autorisée.` });
-    // }
+    } else {
+        res.status(405).json({ error: `Méthode ${req.method} non autorisée.` });
+    }
 }
