@@ -5,6 +5,7 @@ const nextConfig = {
       {
         // Correspondance avec toutes les routes API
         source: "/api/:path*",
+        destination: 'http://localhost:3000/api/:path*',
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
           { key: "Access-Control-Allow-Origin", value: "*" },

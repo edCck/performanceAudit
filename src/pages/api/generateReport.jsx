@@ -7,9 +7,25 @@ import fs from 'fs';
 import fetch from 'node-fetch';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
+import Cors from 'cors';
 
 const prisma = new PrismaClient();
 
+const cors = Cors({
+    methods: ['POST', 'GET', 'HEAD'],
+    origin: 'https://light-house-rho.vercel.app/' // Remplacez par votre domaine Vercel
+  });
+
+  function runMiddleware(req, res, fn) {
+    return new Promise((resolve, reject) => {
+      fn(req, res, (result) => {
+        if (result instanceof Error) {
+          return reject(result);
+        }
+        return resolve(result);
+      });
+    });
+  }
 
 // Fonction pour extraire le nom de domaine de l'URL
 function getDomainName(url) {
@@ -53,6 +69,8 @@ function getUserIdFromToken(token) {
 
 
 export default async function handler(req, res) {
+
+    await runMiddleware(req, res, cors);
 
   res.setHeader('Access-Control-Allow-Credentials', true)
   res.setHeader('Access-Control-Allow-Origin', '*')
