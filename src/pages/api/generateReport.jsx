@@ -54,9 +54,13 @@ function getUserIdFromToken(token) {
 
 export default async function handler(req, res) {
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', true)
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  )
     
     if (req.method === "POST") {
         const { email, url } = req.body;
@@ -250,7 +254,6 @@ export default async function handler(req, res) {
             res.status(500).json({ error: "Erreur lors de la génération du rapport ou de l'envoi de l'email" });
         }
     } else {
-        res.setHeader("Allow", ["POST"]);
         res.status(405).json({ error: `Méthode ${req.method} non autorisée.` });
     }
 }
