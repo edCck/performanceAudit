@@ -13,7 +13,7 @@ const prisma = new PrismaClient();
 
 const cors = Cors({
     methods: ['POST', 'GET', 'HEAD'],
-    origin: 'https://light-house-rho.vercel.app/' // Remplacez par votre domaine Vercel
+    origin: 'https://light-house-rho.vercel.app/'
   });
 
   function runMiddleware(req, res, fn) {
