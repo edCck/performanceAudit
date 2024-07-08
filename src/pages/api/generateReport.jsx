@@ -7,7 +7,6 @@ import fs from 'fs';
 import fetch from 'node-fetch';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import Cors from 'cors';
 
 const prisma = new PrismaClient();
 
@@ -52,26 +51,19 @@ function getUserIdFromToken(token) {
     }
 }
 
-
-
-const cors = Cors({
-  methods: ['POST', 'GET', 'HEAD'],
-});
-
-function runMiddleware(req, res, fn) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-      return resolve(result);
-    });
-  });
-}
-
+const cors = (req, res) => {
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+    
+    if (req.method === 'OPTIONS') {
+        res.status(200).end();
+        return;
+    }
+};
 
 export default async function handler(req, res) {
-    await runMiddleware(req, res, cors);
 
     if (req.method === "POST") {
         const { email, url } = req.body;
