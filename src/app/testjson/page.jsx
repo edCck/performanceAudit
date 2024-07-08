@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+export default async function testjson(req, res) {
     if (req.method === "GET") {
         const message = { message: "Ceci est un exemple de message JSON." };
         res.status(200).json(message);
