@@ -26,7 +26,7 @@ export default function GenerateReport() {
       const token = localStorage.getItem('token');
       // Envoi de la requête HTTP au serveur pour générer le rapport
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL2;
 
 
       const response = await fetch(`${apiUrl}/api/generateReport`, {
