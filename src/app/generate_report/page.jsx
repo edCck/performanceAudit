@@ -25,7 +25,11 @@ export default function GenerateReport() {
       // Récupération du token dans le local storage
       const token = localStorage.getItem('token');
       // Envoi de la requête HTTP au serveur pour générer le rapport
-      const response = await fetch("/api/generateReport", {
+
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+
+      const response = await fetch(`${apiUrl}/api/generateReport`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

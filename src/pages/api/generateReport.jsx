@@ -7,9 +7,25 @@ import fs from 'fs';
 import fetch from 'node-fetch';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
+import Cors from 'cors';
 
 const prisma = new PrismaClient();
 
+const cors = Cors({
+    methods: ['POST', 'GET', 'HEAD'],
+    origin: 'https://light-house-rho.vercel.app/'
+  });
+
+  function runMiddleware(req, res, fn) {
+    return new Promise((resolve, reject) => {
+      fn(req, res, (result) => {
+        if (result instanceof Error) {
+          return reject(result);
+        }
+        return resolve(result);
+      });
+    });
+  }
 
 // Fonction pour extraire le nom de domaine de l'URL
 function getDomainName(url) {
@@ -54,9 +70,8 @@ function getUserIdFromToken(token) {
 
 export default async function handler(req, res) {
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    await runMiddleware(req, res, cors);
+
     
     if (req.method === "POST") {
         const { email, url } = req.body;
@@ -250,7 +265,6 @@ export default async function handler(req, res) {
             res.status(500).json({ error: "Erreur lors de la génération du rapport ou de l'envoi de l'email" });
         }
     } else {
-        res.setHeader("Allow", ["POST"]);
         res.status(405).json({ error: `Méthode ${req.method} non autorisée.` });
     }
 }
