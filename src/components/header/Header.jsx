@@ -30,12 +30,12 @@ export default function Header() {
                 </div>
                 <nav className={`${style.navigation} ${open ? style.open : ''}`}>
                     <ul className={style.list}>
-                        <Link href="/"><li className={style.nav_item}>Accueil</li></Link>
+                        <Link href="/" onClick={() => setOpen(false)}><li className={style.nav_item}>Accueil</li></Link>
                         {!isAuthenticated ? (
-                            <Link href="/connexion"><li className={style.nav_item}>Connexion</li></Link>
+                            <Link href="/connexion" onClick={() => setOpen(false)}><li className={style.nav_item}>Connexion</li></Link>
                         ) : (
                             <>
-                                <Link href="/history"><li className={style.nav_item}>Historique</li></Link>
+                                <Link href="/history" onClick={() => setOpen(false)}><li className={style.nav_item}>Historique</li></Link>
                                 <li className={style.nav_item} onClick={handleLogout}>Se déconnecter</li>
                             </>
                         )}

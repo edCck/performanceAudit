@@ -1,8 +1,7 @@
 'use client'
-
 import { useState } from 'react';
 import Image from "next/image";
-import Animation from '../../../public/images/loading.gif'
+import Animation from '../../../public/images/loading.gif';
 import style from './generate.module.css';
 
 export default function GenerateReport() {
@@ -10,22 +9,70 @@ export default function GenerateReport() {
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [desktopScores, setDesktopScores] = useState(null);
+  const [mobileScores, setMobileScores] = useState(null);
   const [desktopReportUrl, setDesktopReportUrl] = useState(null);
   const [mobileReportUrl, setMobileReportUrl] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-
-  // Fonction pour gérer l'envoi du rapport
   const handleSendReport = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage(null);
 
     try {
-      // Récupération du token dans le local storage
       const token = localStorage.getItem('token');
-      // Envoi de la requête HTTP au serveur pour générer le rapport
-      const response = await fetch("/api/generateReport", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+      // Etape 1: Appel à l'API pour récupérer les données desktop en format JSON
+      setIsLoading("desktop"); 
+      const desktopResponse = await fetch(`${apiUrl}/api/generateDataDesktop`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ url }),
+      });
+      const desktopData = await desktopResponse.json();
+
+      if (desktopResponse.ok) {
+        setDesktopScores({
+          performance: desktopData.performance,
+          seo: desktopData.seo,
+          bestpractices: desktopData.bestpractices,
+          accessibility: desktopData.accessibility,
+        });
+      } else {
+        throw new Error(desktopData.error || "Erreur lors de la récupération des scores desktop.");
+      }
+
+      // Etape 2: Appel à l'API pour récupérer les données mobile en format JSON
+      setIsLoading("mobile");
+      const mobileResponse = await fetch(`${apiUrl}/api/generateDataMobile`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ url }),
+      });
+      const mobileData = await mobileResponse.json();
+
+      if (mobileResponse.ok) {
+        setMobileScores({
+          performance: mobileData.performance,
+          seo: mobileData.seo,
+          bestpractices: mobileData.bestpractices,
+          accessibility: mobileData.accessibility,
+        });
+      } else {
+        throw new Error(mobileData.error || "Erreur lors de la récupération des scores mobile.");
+      }
+
+      // Etape 3: Appel à l'API pour générer les PDF
+      setIsLoading("pdf");
+      const generatePdfResponse = await fetch(`${apiUrl}/api/generateReport`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,14 +81,15 @@ export default function GenerateReport() {
         body: JSON.stringify({ email, url }),
       });
 
-      const data = await response.json();
-      if (response.ok) {
+      if (generatePdfResponse.ok) {
+        // Si la réponse est OK, convertir la réponse JSON en objet JavaScript
+        const pdfData = await generatePdfResponse.json();
         setSuccessMessage("Les rapports ont été générés avec succès et l'email a été envoyé !");
-        setDesktopReportUrl(data.desktopReportUrl);
-        setMobileReportUrl(data.mobileReportUrl);
-        setUrl(data.domainName);
+        setDesktopReportUrl(pdfData.desktopReportUrl);
+        setMobileReportUrl(pdfData.mobileReportUrl);
       } else {
-        setErrorMessage(data.error || "Erreur lors de la génération des rapports.");
+        const pdfData = await generatePdfResponse.json();
+        throw new Error(pdfData.error || "Erreur lors de la génération des rapports PDF.");
       }
     } catch (error) {
       console.error("Erreur:", error);
@@ -58,22 +106,72 @@ export default function GenerateReport() {
   return (
     <>
       <section className={style.section}>
-        {isLoading ? (
+        {/* Affiche le loader pendant le chargement des données desktop */}
+        {isLoading && isLoading === "desktop" && (
           <div className={style.loader}>
             <Image src={Animation} alt="Chargement en cours" width={150} />
-            <p>{`Veuillez patienter pendant l'analyse !`}</p>
+            <p>{`Veuillez patienter pendant la récupération des scores desktop !`}</p>
           </div>
-        ) : successMessage ? (
-          <div className={style.success_message}>
+        )}
+        {/* Affiche le loader pendant le chargement des données mobile */}
+        {isLoading && isLoading === "mobile" && (
+          <div className={style.loader}>
+            <Image src={Animation} alt="Chargement en cours" width={150} />
+            <p>{`Veuillez patienter pendant la récupération des scores mobile !`}</p>
+          </div>
+        )}
+        {/* Affiche le loader pendant la génération des PDF */}
+        {isLoading && isLoading === "pdf" && (
+          <div className={style.loader}>
+            <Image src={Animation} alt="Chargement en cours" width={150} />
+            <p>{`Veuillez patienter pendant la génération des rapports PDF !`}</p>
+          </div>
+        )}
+
+        {/* Affiche les scores de performance pour la version ordinateur si disponibles */}
+        {desktopScores && (
+          <div className={style.score_container}>
             <div>
               <h1 className={style.titre}>Félicitations !</h1>
               <span className={style.line}></span>
             </div>
-            <p className={style.paragraphe}>
-              {successMessage}
-              <br />
-              Veuillez trouver ci-dessous les rapports de performance de votre site en version ordinateur et version mobile.
-            </p>
+            <h2>Scores de performance - Version ordinateur</h2>
+            <div className={style.score}>
+              <ul>
+                <li>Performance: {desktopScores.performance}</li>
+                <li>SEO: {desktopScores.seo}</li>
+                <li>Best Practices: {desktopScores.bestpractices}</li>
+                <li>Accessibilité: {desktopScores.accessibility}</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {/* Affiche les scores de performance pour la version mobile si disponibles */}
+        {mobileScores && (
+          <div className={style.score_container}>
+            <h2>Scores de performance - Version mobile</h2>
+            <div className={style.score}>
+              <ul>
+                <li>Performance: {mobileScores.performance}</li>
+                <li>SEO: {mobileScores.seo}</li>
+                <li>Best Practices: {mobileScores.bestpractices}</li>
+                <li>Accessibilité: {mobileScores.accessibility}</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {/* Affiche le message de succès avec les liens vers les rapports PDF */}
+        {successMessage && (
+          <div className={style.success_message}>
+            <div>
+              <p className={style.paragraphe}>
+                {successMessage}
+                <br />
+                Veuillez trouver ci-dessous les rapports de performance de votre site en version ordinateur et version mobile.
+              </p>
+            </div>
             <div className={style.block_reports}>
               <p className={style.url}>{url}</p>
               <div className={style.block_btn}>
@@ -87,7 +185,10 @@ export default function GenerateReport() {
               </button>
             </div>
           </div>
-        ) : (
+        )}
+
+        {/* Affiche le formulaire pour entrer l'email et l'URL du site si aucune opération n'est en cours */}
+        {!isLoading && !successMessage && (
           <>
             <div>
               <h1 className={style.titre}>Générer votre rapport de performance !</h1>
@@ -102,7 +203,7 @@ export default function GenerateReport() {
                 Aliquam mattis felis vel tortor imperdiet pharetra. Etiam metus ex, mollis ac maximus nec, vehicula quis neque.
               </p>
             </div>
-            <form className={style.form}>
+            <form className={style.form} onSubmit={handleSendReport}>
               <p className={style.titre_form}>Recevoir le rapport</p>
               {errorMessage && <p className={style.error_message}>{errorMessage}</p>}
               <div className={style.block_input}>
@@ -124,7 +225,7 @@ export default function GenerateReport() {
                 />
               </div>
               <div className={style.block_btn}>
-                <button onClick={handleSendReport} className={style.btn}>Tester votre site</button>
+                <button type="submit" className={style.btn}>Tester votre site</button>
               </div>
             </form>
           </>

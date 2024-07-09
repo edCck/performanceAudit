@@ -10,7 +10,6 @@ import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 
-
 // Fonction pour extraire le nom de domaine de l'URL
 function getDomainName(url) {
     const domainPattern = /^(?:https?:\/\/)?(?:www\.)?([^\/]+)(?:\/|$)/i;
@@ -53,6 +52,7 @@ function getUserIdFromToken(token) {
 
 
 export default async function handler(req, res) {
+    
     if (req.method === "POST") {
         const { email, url } = req.body;
         console.log("Données reçues:", { email, url });
@@ -245,6 +245,6 @@ export default async function handler(req, res) {
             res.status(500).json({ error: "Erreur lors de la génération du rapport ou de l'envoi de l'email" });
         }
     } else {
-        res.status(405).json({ error: "Méthode non autorisée" });
+        res.status(405).json({ error: `Méthode ${req.method} non autorisée.` });
     }
 }
