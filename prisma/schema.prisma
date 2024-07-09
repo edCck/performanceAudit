@@ -23,11 +23,6 @@ model Report {
   pdfUrlMobile     String?                              // Champ pour stocker l'URL du PDF généré pour le rapport mobile.
   pdfUrlDesktop    String?                              // Champ pour stocker l'URL du PDF généré pour le rapport desktop.
   createdAt        DateTime @default(now())             // Champ pour stocker la date et l'heure de création du rapport, par défaut la date actuelle.
-  performanceScore Int?                                 // Score de performance
-  seoScore         Int?                                 // Score SEO
-  bestPracticesScore Int?                               // Score des meilleures pratiques
-  accessibilityScore Int?                               // Score d'accessibilité
-
   
   user             User     @relation(fields: [userId], references: [id]) // Relation avec le modèle User.
 }
