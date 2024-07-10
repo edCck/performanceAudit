@@ -15,13 +15,17 @@ function getFormattedTime() {
     return `${String(now.getHours()).padStart(2, '0')}-${String(now.getMinutes()).padStart(2, '0')}-${String(now.getSeconds()).padStart(2, '0')}`;
 }
 
-// Fonction pour récupérer l'id de l'utilisateur
+// Fonction pour récupérer l'ID utilisateur à partir du token
 function getUserIdFromToken(token) {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         return decoded.id;
     } catch (error) {
-        console.error('Erreur lors de la vérification du token:', error);
+        if (error instanceof jwt.JsonWebTokenError) {
+            console.error('Erreur lors de la vérification du token:', error.message);
+        } else {
+            console.error('Erreur inattendue lors de la vérification du token:', error.message);
+        }
         return null;
     }
 }
@@ -38,18 +42,22 @@ function getDomainName(url) {
 }
 
 export default async function handler(req, res) {
-    
+
     if (req.method === "POST") {
         const { email, url } = req.body;
         console.log("Données reçues:", { email, url });
 
-    
-        // Récupération de l'ID de l'utilisateur à partir du token d'autorisation
         let userId = null;
+
+        // Vérification de la présence du token
         if (req.headers.authorization) {
             const token = req.headers.authorization.split(' ')[1];
             userId = getUserIdFromToken(token);
-            console.log("User ID from token:", userId);
+            console.log('User ID from token:', userId);
+
+            if (!userId) {
+                console.log('Token invalide ou expiré, utilisateur invité.');
+            }
         }
 
         try {
@@ -153,16 +161,26 @@ export default async function handler(req, res) {
 
             await chrome.kill();
 
+
             if (userId) {
+                // Récupérer uniquement l'ID du dernier rapport créé
+                const lastReport = await prisma.report.findFirst({
+                    orderBy: { createdAt: 'desc' },
+                    select: { id: true }
+                });
+                if (!lastReport) {
+                    throw new Error('Aucun rapport trouvé.');
+                }
                 // Enregistrement du rapport dans la base de données
-                await prisma.pdf.create({
+                const pdfRecord = await prisma.pdf.create({
                     data: {
-                        userId: userId,
+                        reportId: lastReport.id,
                         pdfUrlMobile: mobileReportUrl,
-                        pdfUrlDesktop: desktopReportUrl,
+                        pdfUrlDesktop: desktopReportUrl
                     }
                 });
-                console.log('Rapport enregistré dans la base de données.');
+
+                console.log('Rapport enregistré dans la base de données:', pdfRecord);
             }
 
             const transporter = nodemailer.createTransport({
@@ -215,7 +233,6 @@ export default async function handler(req, res) {
                         message: "Email envoyé avec succès",
                         desktopReportUrl,
                         mobileReportUrl,
-                        domainName
                     });
                 }
             });

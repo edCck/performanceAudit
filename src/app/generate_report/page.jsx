@@ -26,8 +26,6 @@ export default function GenerateReport() {
 
       // Etape 1: Appel à l'API pour récupérer les données desktop en format JSON
       setIsLoading("desktop");
-
-      
       const reportResponse = await fetch(`${apiUrl}/api/generateReport`, {
         method: "POST",
         headers: {
@@ -39,7 +37,7 @@ export default function GenerateReport() {
       const reportData = await reportResponse.json();
 
       if (reportResponse.ok) {
-        setSuccessMessage("Rapport généré avec succès !");
+        setUrl(reportData.domainName)
       } else {
         throw new Error(reportData.error || "Erreur lors de la génération du rapport.");
       }
@@ -58,7 +56,7 @@ export default function GenerateReport() {
         setDesktopScores({
           performance: desktopData.performance,
           seo: desktopData.seo,
-          bestpractices: desktopData.bestpractices,
+          bestpractices: desktopData.bestPractices,
           accessibility: desktopData.accessibility,
         });
       } else {
@@ -73,7 +71,7 @@ export default function GenerateReport() {
           "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ url}),
+        body: JSON.stringify({ url }),
       });
       const mobileData = await mobileResponse.json();
 
@@ -81,7 +79,7 @@ export default function GenerateReport() {
         setMobileScores({
           performance: mobileData.performance,
           seo: mobileData.seo,
-          bestpractices: mobileData.bestpractices,
+          bestpractices: mobileData.bestPractices,
           accessibility: mobileData.accessibility,
         });
       } else {
@@ -96,7 +94,7 @@ export default function GenerateReport() {
           "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ email, url}), 
+        body: JSON.stringify({ email, url }),
       });
 
       if (generatePdfResponse.ok) {
@@ -118,7 +116,7 @@ export default function GenerateReport() {
   };
 
   const refreshPage = () => {
-    window.location.href = window.location.href; // Recharge la page actuelle
+    window.location.href = window.location.href;
   };
 
   const getBorderColorClass = (score) => {
@@ -129,7 +127,7 @@ export default function GenerateReport() {
     } else if (score >= 80 && score <= 100) {
       return style.green;
     } else {
-      return ''; // au cas où le score est en dehors des limites attendues
+      return '';
     }
   }
 
@@ -257,7 +255,6 @@ export default function GenerateReport() {
             </div>
           </div>
         )}
-
         {/* Affiche le formulaire pour entrer l'email et l'URL du site si aucune opération n'est en cours */}
         {!isLoading && !successMessage && (
           <>
