@@ -27,14 +27,22 @@ export default function GenerateReport() {
       // Etape 1: Appel à l'API pour récupérer les données desktop en format JSON
       setIsLoading("desktop");
 
-      const report = await fetch(`${apiUrl}/api/generateReport`, { 
+      
+      const reportResponse = await fetch(`${apiUrl}/api/generateReport`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ url }), // Inclure reportId dans la requête
+        body: JSON.stringify({ url }),
       });
+      const reportData = await reportResponse.json();
+
+      if (reportResponse.ok) {
+        setSuccessMessage("Rapport généré avec succès !");
+      } else {
+        throw new Error(reportData.error || "Erreur lors de la génération du rapport.");
+      }
 
       const desktopResponse = await fetch(`${apiUrl}/api/generateDataDesktop`, {
         method: "POST",
