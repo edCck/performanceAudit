@@ -1,13 +1,12 @@
-'use client'
+"use client"
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'
-import style from './history.module.css'
+import { useRouter } from 'next/navigation';
+import style from './history.module.css';
 
 export default function History() {
     const [userReports, setUserReports] = useState([]);
     const router = useRouter();
-
 
     // Vérification du token
     useEffect(() => {
@@ -43,28 +42,29 @@ export default function History() {
     }, [router]);
 
     return (
-        <>
-            <section className={style.section}>
-                <div>
+        <section className={style.section}>
+            <div>
                 <h1 className={style.titre}>Historique de vos rapports LightHouse</h1>
                 <span className={style.line}></span>
-                </div>
-              
+            </div>
 
-                <div className={style.container_report}>
-                    {userReports.map((report, index) => (
-                        <div key={index} className={style.block_report}>
-                            <div className={style.report}>
+            <div className={style.container_report}>
+                {userReports.map((report, index) => (
+                    <div key={index} className={style.block_report}>
+                        <div className={style.report}>
                             <p>{report.siteName}</p>
                             <p>Date: {new Date(report.createdAt).toLocaleDateString()}</p>
-                            <a href={report.pdfUrlDesktop} target="_blank" rel="noopener noreferrer">Télécharger PDF (Desktop)</a>
-                            <a href={report.pdfUrlMobile} target="_blank" rel="noopener noreferrer">Télécharger PDF (Mobile)</a>
-                            </div>
+                            {/* Accéder aux liens PDF desktop et mobile */}
+                            {report.pdf.map((pdf, pdfIndex) => (
+                                <div key={pdfIndex}>
+                                    <a href={pdf.pdfUrlDesktop} target="_blank" rel="noopener noreferrer">Télécharger PDF (Desktop)</a>
+                                    <a href={pdf.pdfUrlMobile} target="_blank" rel="noopener noreferrer">Télécharger PDF (Mobile)</a>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
-            
-            </section>
-        </>
+                    </div>
+                ))}
+            </div>
+        </section>
     );
 }

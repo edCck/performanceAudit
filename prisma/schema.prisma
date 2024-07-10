@@ -8,23 +8,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Modèle User
 model User {
-  id        Int      @id @default(autoincrement()) // Champ ID auto-incrémenté et clé primaire.
-  email     String   @unique                       // Champ email unique.
-  password  String                                // Champ password pour stocker le mot de passe hashé.
-  reports   Report[]                              // Relation une-à-plusieurs avec le modèle Report.
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
+  reports   Report[]  // Relation une-à-plusieurs avec le modèle Report.
 }
 
 model Report {
-  id               Int      @id @default(autoincrement()) // Champ ID auto-incrémenté et clé primaire.
-  userId           Int                                  // Champ pour stocker l'ID de l'utilisateur qui a généré le rapport.
-  siteName         String                               // Champ pour stocker le nom du site audité.
-  pdfUrlMobile     String?                              // Champ pour stocker l'URL du PDF généré pour le rapport mobile.
-  pdfUrlDesktop    String?                              // Champ pour stocker l'URL du PDF généré pour le rapport desktop.
-  createdAt        DateTime @default(now())             // Champ pour stocker la date et l'heure de création du rapport, par défaut la date actuelle.
-  
-  user             User     @relation(fields: [userId], references: [id]) // Relation avec le modèle User.
+  id             Int    @id @default(autoincrement())
+  userId         Int
+  siteName       String
+  createdAt      DateTime @default(now())
+  desktopScores  DesktopPerformanceScore[]
+  mobileScores   MobilePerformanceScore[]
+  pdf            Pdf[]
+  User           User @relation(fields: [userId], references: [id])
 }
+
+model Pdf {
+  id             Int    @id @default(autoincrement())
+  reportId       Int
+  pdfUrlMobile   String
+  pdfUrlDesktop  String
+  Report         Report @relation(fields: [reportId], references: [id])
+}
+
+model DesktopPerformanceScore {
+  id             Int @id @default(autoincrement())
+  reportId       Int
+  performance    Int
+  seo            Int
+  bestpractices  Int
+  accessibility  Int
+  Report         Report @relation(fields: [reportId], references: [id])
+}
+
+model MobilePerformanceScore {
+  id             Int @id @default(autoincrement())
+  reportId       Int
+  performance    Int
+  seo            Int
+  bestpractices  Int
+  accessibility  Int
+  Report         Report @relation(fields: [reportId], references: [id])
+}
+
 
 

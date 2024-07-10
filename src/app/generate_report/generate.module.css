@@ -8,6 +8,10 @@
     margin-bottom: 95px;
 }
 
+.section .title_container {
+    width: 100%;
+}
+
 .section .titre {
     color: var(--color-text);
     font-family: var(--font-libre-baskerville);
@@ -101,6 +105,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .loader p {
@@ -109,7 +115,7 @@
     font-weight: bold;
     text-align: center;
     color: white;
-    font-family: var(--font-libre-baskerville);
+    font-family: var(--font-sahitya);
 }
 
 .success_message {
@@ -175,6 +181,71 @@
     color: var(--color-primaire);
 }
 
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 30px;
+    margin-bottom: 30px;
+    column-gap: 30px;
+}
+
+.container .score_container h2 {
+    color: var(--color-text);
+    font-family: var(--font-libre-baskerville);
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.container .score_container .score {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container .score_container .score .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+    width: 120px;
+}
+
+
+.container .score_container .score p {
+    color: var(--color-text);
+    font-family: var(--font-sahitya);
+    font-size: 20px;
+}
+
+.container .score_container .score .round {
+    border: 3px solid white;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+}
+
+.container .score_container .score .round.red {
+    border-color: #FF0000;
+}
+
+.container .score_container .score .round.orange {
+    border-color: #E67700;
+}
+
+.container .score_container .score .round.green {
+    border-color: #00CC66;
+}
+
+.container .score_container .score .round p {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text);
+    font-family: var(--font-sahitya);
+}
+
+
 @media screen and (max-width:1350px) {
     .section .titre {
         font-size: 35px;
@@ -182,6 +253,12 @@
 
     .section .paragraphe {
         font-size: 23px;
+    }
+}
+
+@media screen and (max-width:1145px) {
+    .container {
+        justify-content: center;
     }
 }
 
@@ -193,6 +270,10 @@
 
     .section .paragraphe {
         font-size: 21px;
+    }
+
+    .section .line {
+        width: 120px;
     }
 }
 
@@ -268,5 +349,23 @@
         width: 220px;
         padding: 10px;
         font-size: 14px;
+    }
+}
+
+@media screen and (max-width:600px) {
+
+    .container .score_container h2 {
+        font-size: 18px;
+    }
+
+    .container .score_container .score p {
+        font-size: 18px;
+    }
+
+    .container .score_container .score {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        row-gap: 15px;
     }
 }
