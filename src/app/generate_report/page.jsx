@@ -25,7 +25,7 @@ export default function GenerateReport() {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
       // Etape 1: Appel à l'API pour récupérer les données desktop en format JSON
-      setIsLoading("desktop"); 
+      setIsLoading("desktop");
       const desktopResponse = await fetch(`${apiUrl}/api/generateDataDesktop`, {
         method: "POST",
         headers: {
@@ -103,6 +103,18 @@ export default function GenerateReport() {
     window.location.href = window.location.href; // Recharge la page actuelle
   };
 
+  const getBorderColorClass = (score) => {
+    if (score >= 0 && score < 50) {
+      return style.red;
+    } else if (score >= 50 && score < 80) {
+      return style.orange;
+    } else if (score >= 80 && score <= 100) {
+      return style.green;
+    } else {
+      return ''; // au cas où le score est en dehors des limites attendues
+    }
+  }
+
   return (
     <>
       <section className={style.section}>
@@ -128,39 +140,80 @@ export default function GenerateReport() {
           </div>
         )}
 
-        {/* Affiche les scores de performance pour la version ordinateur si disponibles */}
-        {desktopScores && (
-          <div className={style.score_container}>
-            <div>
-              <h1 className={style.titre}>Félicitations !</h1>
-              <span className={style.line}></span>
-            </div>
-            <h2>Scores de performance - Version ordinateur</h2>
-            <div className={style.score}>
-              <ul>
-                <li>Performance: {desktopScores.performance}</li>
-                <li>SEO: {desktopScores.seo}</li>
-                <li>Best Practices: {desktopScores.bestpractices}</li>
-                <li>Accessibilité: {desktopScores.accessibility}</li>
-              </ul>
-            </div>
-          </div>
-        )}
+        <section className={style.container}>
+          {/* Affiche les scores de performance pour la version ordinateur si disponibles */}
+          {desktopScores && (
+            <>
+              <div className={style.title_container}>
+                <h1 className={style.titre}>Félicitation !</h1>
+                <span className={style.line}></span>
+              </div>
+              <div className={style.score_container}>
+                <h2>Scores de performance - Version ordinateur</h2>
+                <div className={style.score}>
+                  <div className={style.item}>
+                    <div className={`${style.round} ${getBorderColorClass(desktopScores.performance)}`}>
+                      <p>{desktopScores.performance}</p>
+                    </div>
+                    <p>Performance</p>
+                  </div>
+                  <div className={style.item}>
+                    <div className={`${style.round} ${getBorderColorClass(desktopScores.seo)}`}>
+                      <p>{desktopScores.seo}</p>
+                    </div>
+                    <p>SEO</p>
+                  </div>
+                  <div className={style.item}>
+                    <div className={`${style.round} ${getBorderColorClass(desktopScores.bestpractices)}`}>
+                      <p>{desktopScores.bestpractices}</p>
+                    </div>
+                    <p>Best Practices</p>
+                  </div>
+                  <div className={style.item}>
+                    <div className={`${style.round} ${getBorderColorClass(desktopScores.accessibility)}`}>
+                      <p>{desktopScores.accessibility}</p>
+                    </div>
+                    <p>Accessibility</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
 
-        {/* Affiche les scores de performance pour la version mobile si disponibles */}
-        {mobileScores && (
-          <div className={style.score_container}>
-            <h2>Scores de performance - Version mobile</h2>
-            <div className={style.score}>
-              <ul>
-                <li>Performance: {mobileScores.performance}</li>
-                <li>SEO: {mobileScores.seo}</li>
-                <li>Best Practices: {mobileScores.bestpractices}</li>
-                <li>Accessibilité: {mobileScores.accessibility}</li>
-              </ul>
+          {/* Affiche les scores de performance pour la version mobile si disponibles */}
+          {mobileScores && (
+            <div className={style.score_container}>
+              <h2>Scores de performance - Version mobile</h2>
+              <div className={style.score}>
+                <div className={style.item}>
+                  <div className={`${style.round} ${getBorderColorClass(mobileScores.performance)}`}>
+                    <p>{mobileScores.performance}</p>
+                  </div>
+                  <p>Performance</p>
+                </div>
+                <div className={style.item}>
+                  <div className={`${style.round} ${getBorderColorClass(mobileScores.seo)}`}>
+                    <p>{mobileScores.seo}</p>
+                  </div>
+                  <p>SEO</p>
+                </div>
+                <div className={style.item}>
+                  <div className={`${style.round} ${getBorderColorClass(mobileScores.bestpractices)}`}>
+                    <p>{mobileScores.bestpractices}</p>
+                  </div>
+                  <p>Best Practices</p>
+                </div>
+                <div className={style.item}>
+                  <div className={`${style.round} ${getBorderColorClass(mobileScores.accessibility)}`}>
+                    <p>{mobileScores.accessibility}</p>
+                  </div>
+                  <p>Accessibilité</p>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </section>
+
 
         {/* Affiche le message de succès avec les liens vers les rapports PDF */}
         {successMessage && (
@@ -190,44 +243,46 @@ export default function GenerateReport() {
         {/* Affiche le formulaire pour entrer l'email et l'URL du site si aucune opération n'est en cours */}
         {!isLoading && !successMessage && (
           <>
-            <div>
-              <h1 className={style.titre}>Générer votre rapport de performance !</h1>
-              <span className={style.line}></span>
-            </div>
-            <div>
-              <p className={style.paragraphe}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis aliquam nisi et ultrices.
-                Praesent id leo vestibulum, maximus lorem ut, vestibulum sapien. Proin est quam, rutrum quis
-                facilisis ut, blandit vitae quam. Vivamus id felis in felis maximus egestas. Nam varius orci
-                orci, et viverra lacus convallis a. Curabitur in justo porta, cursus justo nec, rutrum nunc.
-                Aliquam mattis felis vel tortor imperdiet pharetra. Etiam metus ex, mollis ac maximus nec, vehicula quis neque.
-              </p>
-            </div>
-            <form className={style.form} onSubmit={handleSendReport}>
-              <p className={style.titre_form}>Recevoir le rapport</p>
-              {errorMessage && <p className={style.error_message}>{errorMessage}</p>}
-              <div className={style.block_input}>
-                <input
-                  className={style.input}
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+            <section>
+              <div>
+                <h1 className={style.titre}>Générer votre rapport de performance !</h1>
+                <span className={style.line}></span>
               </div>
-              <div className={style.block_input}>
-                <input
-                  className={style.input}
-                  type="url"
-                  placeholder="URL"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                />
+              <div>
+                <p className={style.paragraphe}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis aliquam nisi et ultrices.
+                  Praesent id leo vestibulum, maximus lorem ut, vestibulum sapien. Proin est quam, rutrum quis
+                  facilisis ut, blandit vitae quam. Vivamus id felis in felis maximus egestas. Nam varius orci
+                  orci, et viverra lacus convallis a. Curabitur in justo porta, cursus justo nec, rutrum nunc.
+                  Aliquam mattis felis vel tortor imperdiet pharetra. Etiam metus ex, mollis ac maximus nec, vehicula quis neque.
+                </p>
               </div>
-              <div className={style.block_btn}>
-                <button type="submit" className={style.btn}>Tester votre site</button>
-              </div>
-            </form>
+              <form className={style.form} onSubmit={handleSendReport}>
+                <p className={style.titre_form}>Recevoir le rapport</p>
+                {errorMessage && <p className={style.error_message}>{errorMessage}</p>}
+                <div className={style.block_input}>
+                  <input
+                    className={style.input}
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className={style.block_input}>
+                  <input
+                    className={style.input}
+                    type="url"
+                    placeholder="URL"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                  />
+                </div>
+                <div className={style.block_btn}>
+                  <button type="submit" className={style.btn}>Tester votre site</button>
+                </div>
+              </form>
+            </section>
           </>
         )}
       </section>

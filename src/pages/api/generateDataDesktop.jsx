@@ -1,9 +1,32 @@
 import { launch } from 'chrome-launcher';
 import lighthouse from 'lighthouse';
+import { PrismaClient } from '@prisma/client';
+import jwt from 'jsonwebtoken';
+
+const prisma = new PrismaClient();
+
+
+// Fonction pour récupérer l'id de l'utilisateur
+function getUserIdFromToken(token) {
+  try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      return decoded.id;
+  } catch (error) {
+      console.error('Erreur lors de la vérification du token:', error);
+      return null;
+  }
+}
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const { url } = req.body;
+
+    let userId = null;
+        if (req.headers.authorization) {
+            const token = req.headers.authorization.split(' ')[1];
+            userId = getUserIdFromToken(token);
+            console.log("User ID from token:", userId);
+        }
 
     const generateScores = async (url, options) => {
       const runnerResult = await lighthouse(url, options);
@@ -37,6 +60,18 @@ export default async function handler(req, res) {
 
       const desktopScores = await generateScores(url, desktopOptions);
       res.status(200).json(desktopScores);
+
+      if (userId) {
+       await prisma.desktopperformancescore.create({
+          data: {
+            reportd: id,
+            performance: desktopScores.performance,
+            seo: desktopScores.seo,
+            bestpractices: desktopScores.bestpractices,
+            accessibility: desktopScores.accessibility,
+          },
+        });
+      }
 
     } catch (error) {
       console.error("Erreur lors de l'analyse Lighthouse:", error);
