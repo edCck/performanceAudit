@@ -16,39 +16,42 @@ model User {
 }
 
 model Report {
-  id               Int      @id @default(autoincrement())
-  userId           Int
-  siteName         String
-  pdfUrlMobile     String?
-  pdfUrlDesktop    String?
-  createdAt        DateTime @default(now())
-  
-  desktopPerformanceScores DesktopPerformanceScore[]
-  mobilePerformanceScores MobilePerformanceScore[]
+  id             Int    @id @default(autoincrement())
+  userId         Int
+  siteName       String
+  createdAt      DateTime @default(now())
+  desktopScores  DesktopPerformanceScore[]
+  mobileScores   MobilePerformanceScore[]
+  pdf            Pdf[]
+  User           User @relation(fields: [userId], references: [id])
+}
 
-  user             User     @relation(fields: [userId], references: [id])
+model Pdf {
+  id             Int    @id @default(autoincrement())
+  reportId       Int
+  pdfUrlMobile   String
+  pdfUrlDesktop  String
+  Report         Report @relation(fields: [reportId], references: [id])
 }
 
 model DesktopPerformanceScore {
-  id            Int      @id @default(autoincrement())
-  reportId      Int
-  performance   Int
-  seo           Int
-  bestPractices Int
-  accessibility Int
-
-  report        Report   @relation(fields: [reportId], references: [id])
+  id             Int @id @default(autoincrement())
+  reportId       Int
+  performance    Int
+  seo            Int
+  bestpractices  Int
+  accessibility  Int
+  Report         Report @relation(fields: [reportId], references: [id])
 }
 
 model MobilePerformanceScore {
-  id            Int      @id @default(autoincrement())
-  reportId      Int
-  performance   Int
-  seo           Int
-  bestPractices Int
-  accessibility Int
-
-  report        Report   @relation(fields: [reportId], references: [id])
+  id             Int @id @default(autoincrement())
+  reportId       Int
+  performance    Int
+  seo            Int
+  bestpractices  Int
+  accessibility  Int
+  Report         Report @relation(fields: [reportId], references: [id])
 }
 
 

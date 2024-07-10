@@ -26,13 +26,23 @@ export default function GenerateReport() {
 
       // Etape 1: Appel à l'API pour récupérer les données desktop en format JSON
       setIsLoading("desktop");
+
+      const report = await fetch(`${apiUrl}/api/generateReport`, { 
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ url }), // Inclure reportId dans la requête
+      });
+
       const desktopResponse = await fetch(`${apiUrl}/api/generateDataDesktop`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url }), // Inclure reportId dans la requête
       });
       const desktopData = await desktopResponse.json();
 
@@ -55,7 +65,7 @@ export default function GenerateReport() {
           "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url}),
       });
       const mobileData = await mobileResponse.json();
 
@@ -72,13 +82,13 @@ export default function GenerateReport() {
 
       // Etape 3: Appel à l'API pour générer les PDF
       setIsLoading("pdf");
-      const generatePdfResponse = await fetch(`${apiUrl}/api/generateReport`, {
+      const generatePdfResponse = await fetch(`${apiUrl}/api/generatePdf`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ email, url }),
+        body: JSON.stringify({ email, url}), 
       });
 
       if (generatePdfResponse.ok) {
